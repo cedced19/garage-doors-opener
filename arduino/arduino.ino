@@ -6,10 +6,7 @@ SoftwareSerial mySerial(10, 11); // TX, RX
 #define garage2 3
 
 void setup() {
-  // Open serial communications and wait for port to open:
-  Serial.begin(9600);
-  
-  mySerial.begin(115200);
+  mySerial.begin(9600);
 
   pinMode(garage1, OUTPUT);
   pinMode(garage2, OUTPUT);
@@ -22,12 +19,11 @@ void setup() {
 void loop() { // run over and over
   if (mySerial.available()) {
     int c = mySerial.read();
-    Serial.write(c);
-    if (c == 10) {
+    if (c == '1') {
       digitalWrite(garage1, LOW);   
       delay(1000);                      
       digitalWrite(garage1, HIGH);
-    } else if (c == 20) {
+    } else if (c == '2') {
       digitalWrite(garage2, LOW);   
       delay(1000);                      
       digitalWrite(garage2, HIGH);

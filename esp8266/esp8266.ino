@@ -4,39 +4,51 @@
 #include <ESP8266mDNS.h>
 const char* ssid = "claire"; // wifi SSID
 const char* password = "26afaf2004";// wifi password
-ESP8266WebServer server(80); 
+#define garage1 0
+#define garage2 2
+ESP8266WebServer server(80);
+MDNSResponder mdns;
 void setup(void){
-  Serial.begin(115200); // Define bauds of the ESP8266
+  pinMode(garage1, INPUT);
+  pinMode(garage2, INPUT);
+  Serial.begin(9600);
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
-  //Serial.println(WiFi.localIP());
 
-  server.on("/garage/1/toggle", [](){
-    server.send(200, "text/plain", "{\"toggling\":true}");
-    Serial.println("10");
+
+  server.on("/garage/1/toggle/oGXabhvW6k", [](){
+    server.send(200, "application/json", "{\"toggling\":true}");
+    Serial.println('1');
   });
 
-  server.on("/garage/2/toggle", [](){
-    server.send(200, "text/plain", "{\"toggling\":true}");
-    Serial.println("20");
+  server.on("/garage/2/toggle/oGXabhvW6k", [](){
+    server.send(200, "application/json", "{\"toggling\":true}");
+    Serial.println('2');
   });
 
-  server.on("/garage/1/status", [](){
-    server.send(200, "text/plain", "Getting status garage number 1");
+  server.on("/garage/1/status/oGXabhvW6k", [](){
+    if (digitalRead(garage1) == HIGH) {
+      server.send(200, "application/json", "{\"closed\":true}");
+    } else {
+      server.send(200, "application/json", "{\"closed\":false}");
+    }
+    
   });
-  
+
+  server.on("/garage/2/status/oGXabhvW6k", [](){
+    if (digitalRead(garage2) == HIGH) {
+      server.send(200, "application/json", "{\"closed\":true}");
+    } else {
+      server.send(200, "application/json", "{\"closed\":false}");
+    }
+    
+  });
   
   server.begin();
 }
 void loop(void){
   server.handleClient();
-  if (WiFi.status() != WL_CONNECTED) {
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED) {
-      delay(500);
-    }
-  }
 }
