@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StatusBar, StyleSheet, AsyncStorage } from 'react-native';
 import { Container, Button, Icon, Text, Content, Fab } from 'native-base';
-
+import I18n from '../i18n/i18n';
 
 export default class MainScreen extends Component {
   constructor() {
@@ -14,7 +14,7 @@ export default class MainScreen extends Component {
   }
 
   static navigationOptions = {
-    title: 'Garage door opener',
+    title: 'Garage doors opener',
     headerStyle: {
       backgroundColor: '#7496c4'
     }
@@ -34,14 +34,13 @@ export default class MainScreen extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    
     return (
       <Container>
         <StatusBar backgroundColor={'#5880b7'} />
-        <Content>
+        <Content contentContainerStyle ={{paddingHorizontal: 10 }}>
           {this.state.noGarage ? (
             <Text>
-              There is no garage set.
+              {I18n.t('no_garage')}
             </Text>
           ) : (
             <Text>  

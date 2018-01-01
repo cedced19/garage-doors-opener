@@ -9,9 +9,8 @@ export default App = StackNavigator({
   Edit: {screen: EditScreen},
 }, {
   navigationOptions: {
-   drawerLabel: 'Accueil',
    headerStyle:  {
-     backgroundColor: 'dodgerblue'
+     backgroundColor: '#7496c4'
    },
    headerTintColor: 'white'
   }
