@@ -17,7 +17,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "native-base": "^2.3.5",
     "react": "16.0.0",
-    "react-native": "0.50.3"
+    "react-navigation": "^1.0.0-beta.22"
   }
 }
