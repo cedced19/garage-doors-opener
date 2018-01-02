@@ -139,19 +139,19 @@ export default class MainScreen extends Component {
         <StatusBar backgroundColor={'#5880b7'} />
         <Content contentContainerStyle ={{paddingHorizontal: 10 }}>
           <Form>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>{I18n.t('server_address')}</Label>
               <Input value={this.state.server} onChangeText={(text) => this.setState({server: text})} />
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>{I18n.t('password')}</Label>
               <Input value={this.state.password} onChangeText={(text) => this.setState({password: text})} />
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>{I18n.t('garage_number')}</Label>
               <Input value={this.state.number} onChangeText={(text) => this.setState({number: text})}  />
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>{I18n.t('nickname_garage')}</Label>
               <Input value={this.state.nickname} onChangeText={(text) => this.setState({nickname: text})} />
             </Item>
