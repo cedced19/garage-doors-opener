@@ -1,3 +1,5 @@
 mobile/node_modules/
 mobile/android/app/build/
 mobile/android/.gradle/
+mobile/android/app/garage-doors-opener.keystore
+mobile/android/app/gradle.properties
