@@ -13,7 +13,8 @@ export default class MainScreen extends Component {
     this.state = {
       fabActive: false,
       noGarage: true,
-      garages: []
+      garages: [],
+      garagesStatus: {}
     };
 
     this._checkStatus = this._checkStatus.bind(this);
@@ -31,18 +32,20 @@ export default class MainScreen extends Component {
 
   _checkStatus () {
     let garages = this.state.garages;
-    for (var k in garages) {
-      fetch(getAddress(this.state.garages[k], 'status'))
-      .then((response) => response.json())
-      .then((responseJson) => {
-        garages[k].closed = responseJson.closed;
-        this.setState({garages});
-      })
-      .catch((error) => {
-        garages[k].closed = 'error';
-        this.setState({garages});
-      });
+    let promises = [];
+    let ids = [];
+    for (let k in garages) {
+      promises.push(fetch(getAddress(this.state.garages[k], 'status'))
+      .then((response) => response.json()))
+      ids.push(k);
     }
+    Promise.all(promises).then((p) => {
+      for (let k in p) {
+          this.state.garages[ids[k]].closed = p[k].closed;
+      }
+      this.setState({garages})
+    })
+  
   }
 
   _removeId (id) {

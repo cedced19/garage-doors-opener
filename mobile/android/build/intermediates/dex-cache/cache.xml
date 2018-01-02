@@ -84,6 +84,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="/repos/garage-doors-opener/mobile/android/app/build/intermediates/exploded-aar/garagedoorsopener/react-native-i18n/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="56257cd4e2f0a07ada617438a22a5a642d83045e">
+        <dex dex="/repos/garage-doors-opener/mobile/android/app/build/intermediates/pre-dexed/debug/garagedoorsopener-react-native-i18n-unspecified_49676deb9271bd69ad447ac3e761987887f3e54f.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/repos/garage-doors-opener/mobile/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/1.3.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
