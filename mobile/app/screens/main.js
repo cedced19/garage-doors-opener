@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, AsyncStorage } from 'react-native';
+import { StatusBar, StyleSheet, AsyncStorage, Alert } from 'react-native';
 import { Container, Button, Icon, Text, Content, View, Fab, Card, CardItem, Grid, Col, Left, Body, } from 'native-base';
 import I18n from '../i18n/i18n';
 
@@ -15,16 +15,20 @@ export default class MainScreen extends Component {
       noGarage: true,
       garages: []
     };
+
+    this._checkStatus = this._checkStatus.bind(this);
+    this._removeId = this._removeId.bind(this);
   }
 
   static navigationOptions = {
     title: 'Garage doors opener',
     headerStyle: {
       backgroundColor: '#7496c4'
-    }
+    },
+    headerRight: <Button title="Info" />
   };
 
-  _checkState () {
+  _checkStatus () {
     let garages = this.state.garages;
     for (var k in garages) {
       return fetch(getAddress(this.state.garages[k], 'status'))
@@ -40,13 +44,48 @@ export default class MainScreen extends Component {
     }
   }
 
+  _removeId (id) {
+    Alert.alert(
+      I18n.t('warning'),
+      I18n.t('warning_deleting'),
+      [
+        {text: I18n.t('yes'), onPress: () => {
+          AsyncStorage.getItem('garages').then(data => {
+            if (data != null) {
+              let parsed = JSON.parse(data);
+              if (parsed.length >= 1) {
+                for (var k in parsed) {
+                  if (parsed[k].id == id) {
+                    parsed.splice(k, 1);
+                    AsyncStorage.setItem('garages', JSON.stringify(parsed), err => {
+                      if (err) {
+                        Alert.alert(
+                          I18n.t('error'),
+                          I18n.t('error_occured'),
+                          [{text: I18n.t('ok')}]
+                        )
+                      } else {
+                        this.setState({ garages: parsed, noGarage: (parsed.length == 0) });
+                      }
+                    });
+                  }
+                }
+              } 
+            }
+          });
+        }},
+        {text: I18n.t('cancel')}
+      ]
+    )
+  }
+
   componentDidMount () {
     AsyncStorage.getItem('garages').then(data => {
       if (data != null) {
         let parsed = JSON.parse(data);
         if (parsed.length >= 1) {
           this.setState({noGarage: false, garages: parsed});
-          this._checkState();   
+          this._checkStatus();   
         } 
       }
     });
@@ -54,6 +93,17 @@ export default class MainScreen extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    const onGoBack = () => {
+        AsyncStorage.getItem('garages').then(data => {
+          if (data != null) {
+            let parsed = JSON.parse(data);
+            if (parsed.length >= 1) {
+              this.setState({noGarage: false, garages: parsed});
+              this._checkStatus();   
+            } 
+          }
+      });
+    }
     var garageDiv = this.state.garages.map((garage) => {
       let garageStatus;
       if (garage.closed === true) {
@@ -70,7 +120,7 @@ export default class MainScreen extends Component {
         </Text>
       };
       return (
-        <Card style={{ flex: 0 }} key={garage.nickname}>
+        <Card style={{ flex: 0 }} key={garage.id}>
             <CardItem>
                 <Left>
                     <Body>
@@ -82,15 +132,31 @@ export default class MainScreen extends Component {
             <CardItem>
                   <Body>
                       {garageStatus}
+                  </Body>
+            </CardItem>
+            <CardItem>
+                  <Body>
                       <Grid>
                         <Col>
-                
+                          <Button bordered  style={{marginTop: 5}}>
+                            <Icon name='md-key' size={60}   />
+                          </Button>
                         </Col>
-
                         <Col>
-              
+                          <Button bordered  style={{marginTop: 5}} onPress={() => this._checkStatus() }>
+                            <Icon name='md-refresh' size={60}   />
+                          </Button>
                         </Col>
-
+                        <Col>
+                          <Button bordered  style={{marginTop: 5}} onPress={() => navigate('Edit', {id: garage.id, onGoBack: onGoBack })}>
+                            <Icon name='md-create' size={60}   />
+                          </Button>
+                        </Col>
+                        <Col>
+                          <Button bordered  style={{marginTop: 5}} onPress={() => this._removeId(garage.id)}>
+                            <Icon name='md-trash' size={60}   />
+                          </Button>
+                        </Col>
                       </Grid>
                   </Body>
             </CardItem>
@@ -120,7 +186,7 @@ export default class MainScreen extends Component {
             position='bottomRight'
             onPress={() => this.setState({ fabActive: !this.state.fabActive })}>
             <Icon name="md-add" />
-            <Button onPress={() => navigate('Edit')} style={{ backgroundColor: '#DD5144' }}>
+            <Button onPress={() => navigate('Edit', {onGoBack: onGoBack })} style={{ backgroundColor: '#DD5144' }}>
               <Icon name="md-create" />
             </Button>
           </Fab>

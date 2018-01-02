@@ -20,6 +20,7 @@ export default {
     yes: 'Yes',
     info: 'Info',
     warning: 'Warning',
+    warning_deleting: 'Are you sure to delete it ?',
     number: 'Number',
     status: 'Status',
     garage_closed: 'Closed',

@@ -3,6 +3,15 @@ import { StatusBar, StyleSheet, Alert, AsyncStorage } from 'react-native';
 import { Container, Button, Text,  Content, Form, Item, Label, Input } from 'native-base';
 import I18n from '../i18n/i18n';
 
+function makeId() {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
 
 function isUrl (url) {
   return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(url)
@@ -31,12 +40,14 @@ export default class MainScreen extends Component {
         server: '',
         password: '',
         nickname: '',
-        number: ''
+        number: '',
+        id: ''
     }
     this._saveConfig = this._saveConfig.bind(this);
   };
   
   _saveConfig () {
+    const {goBack} = this.props.navigation;
     let emptyProperty = checkEmptyProperties(this.state);
     if (emptyProperty) {
       Alert.alert(
@@ -60,10 +71,20 @@ export default class MainScreen extends Component {
       AsyncStorage.getItem('garages').then(data => {
         if (data != null) {
           let parsed = JSON.parse(data);
-          parsed.push(this.state);
+          if (this.props.navigation.state.params.id) {
+            for (var k in parsed) {
+              if (parsed[k].id == this.props.navigation.state.params.id) {
+                parsed[k] = this.state;
+              }
+            }
+          } else {
+            parsed.push(this.state);
+          }
+          
           AsyncStorage.setItem('garages', JSON.stringify(parsed), err => {
             if (!err) {
-              this.props.navigation.navigate('Main');
+              goBack();
+              this.props.navigation.state.params.onGoBack();
             } else {
               Alert.alert(
                 I18n.t('error'),
@@ -75,7 +96,8 @@ export default class MainScreen extends Component {
         } else {
           AsyncStorage.setItem('garages', JSON.stringify([this.state]), err => {
             if (!err) {
-              this.props.navigation.navigate('Main');
+              goBack();
+              this.props.navigation.state.params.onGoBack();
             } else {
               Alert.alert(
                 I18n.t('error'),
@@ -91,6 +113,25 @@ export default class MainScreen extends Component {
 
   };
 
+  componentDidMount () {
+    if (this.props.navigation.state.params.id) {
+      AsyncStorage.getItem('garages').then(data => {
+        if (data != null) {
+          let parsed = JSON.parse(data);
+          if (parsed.length >= 1) {
+            for (var k in parsed) {
+              if (parsed[k].id == this.props.navigation.state.params.id) {
+                this.setState(parsed[k]);
+              }
+            }
+          } 
+        }
+      });
+    } else {
+      this.setState({id: makeId()});
+    }
+  };
+
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -100,19 +141,19 @@ export default class MainScreen extends Component {
           <Form>
             <Item floatingLabel>
               <Label>{I18n.t('server_address')}</Label>
-              <Input onChangeText={(text) => this.state.server = text} />
+              <Input value={this.state.server} onChangeText={(text) => this.setState({server: text})} />
             </Item>
             <Item floatingLabel>
               <Label>{I18n.t('password')}</Label>
-              <Input onChangeText={(text) => this.state.password = text} />
+              <Input value={this.state.password} onChangeText={(text) => this.setState({password: text})} />
             </Item>
             <Item floatingLabel>
               <Label>{I18n.t('garage_number')}</Label>
-              <Input onChangeText={(text) => this.state.number = text} />
+              <Input value={this.state.number} onChangeText={(text) => this.setState({number: text})}  />
             </Item>
             <Item floatingLabel>
               <Label>{I18n.t('nickname_garage')}</Label>
-              <Input onChangeText={(text) => this.state.nickname = text} />
+              <Input value={this.state.nickname} onChangeText={(text) => this.setState({nickname: text})} />
             </Item>
             <Button style={{marginTop: 10 }}  onPress={this._saveConfig}>
               <Text>{I18n.t('edit')}</Text>
