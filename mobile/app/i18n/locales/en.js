@@ -13,10 +13,15 @@ export default {
     error_invalid_number: 'The garage number is not a number.',
     error_invalid_address: 'The server address is not a valid URL.',
     error_occured: 'An error occurred.',
+    error_requesting_status: 'An error occurred when requesting status.',
     ok: 'OK',
     error: 'Error',
     cancel: 'Cancel',
     yes: 'Yes',
     info: 'Info',
-    warning: 'Warning'
+    warning: 'Warning',
+    number: 'Number',
+    status: 'Status',
+    garage_closed: 'Closed',
+    garage_not_closed: 'Opened'
 };

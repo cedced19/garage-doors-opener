@@ -13,10 +13,15 @@ export default {
     error_invalid_number: 'Le numéro du garage n\'est pas un nombre.',
     error_invalid_address: 'L\'adresse du serveur n\'est pas une URL valide.',
     error_occured: 'Une erreur a eu lieu.',
+    error_requesting_status: 'Impossible de déterminer l\'état actuel de la porte',
     ok: 'OK',
     error: 'Erreur',
     cancel: 'Annuler',
     yes: 'Oui',
     info: 'Info',
-    warning: 'Warning'
+    warning: 'Warning',
+    number: 'Numéro',
+    status: 'État',
+    garage_closed: 'Fermé',
+    garage_not_closed: 'Ouvert'
 };
