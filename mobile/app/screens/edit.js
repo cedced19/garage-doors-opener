@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet, Alert, AsyncStorage } from 'react-native';
 import { Container, Button, Text,  Content, Form, Item, Label, Input } from 'native-base';
 import I18n from '../i18n/i18n';
 
+
+function isUrl (url) {
+  return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(url)
+};
+
+function checkEmptyProperties (state) {
+  for (var k in state) {
+    if (state[k] == '') {
+      return k;
+    }
+  }
+  return false;
+};
 
 export default class MainScreen extends Component {
   static navigationOptions = {
@@ -24,7 +37,58 @@ export default class MainScreen extends Component {
   };
   
   _saveConfig () {
-  
+    let emptyProperty = checkEmptyProperties(this.state);
+    if (emptyProperty) {
+      Alert.alert(
+        I18n.t('error'),
+        I18n.t('error_' + emptyProperty + '_empty'),
+        [{text: I18n.t('ok')}]
+      )
+    } else if (isNaN(Number(this.state.number))) {
+      Alert.alert(
+        I18n.t('error'),
+        I18n.t('error_invalid_number'),
+        [{text: I18n.t('ok')}]
+      )
+    } else if (!isUrl(this.state.server)) {
+      Alert.alert(
+        I18n.t('error'),
+        I18n.t('error_invalid_address'),
+        [{text: I18n.t('ok')}]
+      )
+    } else {
+      AsyncStorage.getItem('garages').then(data => {
+        if (data != null) {
+          let parsed = JSON.parse(data);
+          parsed.push(this.state);
+          AsyncStorage.setItem('garages', JSON.stringify(parsed), err => {
+            if (!err) {
+              this.props.navigation.navigate('Main');
+            } else {
+              Alert.alert(
+                I18n.t('error'),
+                I18n.t('error_occured'),
+                [{text: I18n.t('ok')}]
+              )
+            }
+          });
+        } else {
+          AsyncStorage.setItem('garages', JSON.stringify([this.state]), err => {
+            if (!err) {
+              this.props.navigation.navigate('Main');
+            } else {
+              Alert.alert(
+                I18n.t('error'),
+                I18n.t('error_occured'),
+                [{text: I18n.t('ok')}]
+              )
+            }
+          });
+        }
+      });
+      
+    }
+
   };
 
   render() {
