@@ -18,6 +18,7 @@ export default class MainScreen extends Component {
 
     this._checkStatus = this._checkStatus.bind(this);
     this._removeId = this._removeId.bind(this);
+    this._toggleDoor = this._toggleDoor.bind(this);
   }
 
   static navigationOptions = {
@@ -31,7 +32,7 @@ export default class MainScreen extends Component {
   _checkStatus () {
     let garages = this.state.garages;
     for (var k in garages) {
-      return fetch(getAddress(this.state.garages[k], 'status'))
+      fetch(getAddress(this.state.garages[k], 'status'))
       .then((response) => response.json())
       .then((responseJson) => {
         garages[k].closed = responseJson.closed;
@@ -79,6 +80,33 @@ export default class MainScreen extends Component {
     )
   }
 
+  _toggleDoor (garage) {
+    Alert.alert(
+      I18n.t('warning'),
+      I18n.t('warning_toggling'),
+      [
+        {text: I18n.t('yes'), onPress: () => {
+            fetch(getAddress(garage, 'toggle'))
+              .then((response) => response.json())
+              .then((responseJson) => {
+                Alert.alert(
+                  I18n.t('info'),
+                  I18n.t('info_command_sent'),
+                  [{text: I18n.t('ok')}]
+                )
+              })
+              .catch((error) => {
+                Alert.alert(
+                  I18n.t('error'),
+                  I18n.t('error_sending_request'),
+                  [{text: I18n.t('ok')}]
+                )
+              });
+        }},
+        {text: I18n.t('cancel')}
+      ]);
+  }
+
   componentDidMount () {
     AsyncStorage.getItem('garages').then(data => {
       if (data != null) {
@@ -89,7 +117,7 @@ export default class MainScreen extends Component {
         } 
       }
     });
-  };
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -138,7 +166,7 @@ export default class MainScreen extends Component {
                   <Body>
                       <Grid>
                         <Col>
-                          <Button bordered  style={{marginTop: 5}}>
+                          <Button bordered  style={{marginTop: 5}} onPress={() => this._toggleDoor(garage)}>
                             <Icon name='md-key' size={60}   />
                           </Button>
                         </Col>
