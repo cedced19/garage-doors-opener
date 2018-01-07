@@ -17,6 +17,7 @@ void setup(void){
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
+  WiFi.mode(WIFI_STA);
 
 
   server.on("/garage/1/toggle/oGXabhvW6k", [](){
