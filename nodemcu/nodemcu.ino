@@ -6,8 +6,8 @@ const char* ssid = "wifi_name"; // wifi SSID
 const char* password = "wifi_pwd";// wifi password
 #define garageCommand1 14 // D5
 #define garageSensor1 12 // D6
-#define garageCommand2 13 // D7
-#define garageSensor2 15 // D8
+#define garageCommand2 05 // D1
+#define garageSensor2 04 // D2
 ESP8266WebServer server(80);
 
 void setup(void){
