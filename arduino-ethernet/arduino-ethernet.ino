@@ -7,7 +7,7 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 
-#define garageCommand1 4
+#define garageCommand1 2
 #define garageSensor1 7
 
 EthernetServer server(80);
@@ -62,7 +62,7 @@ void loop() {
                   if (digitalRead(garageSensor1) == HIGH) {
                     client.println("{\"closed\":true}");
                   } else {
-                    client.println( "{\"closed\":false}");
+                    client.println("{\"closed\":false}");
                   }
                   delay(1);
                   client.stop();

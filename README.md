@@ -1,8 +1,12 @@
 # garage-doors-opener
 An application to open my garage doors with an Arduino system through internet.
-[Youtube video](https://www.youtube.com/watch?v=6a8xaTq5VHo).
+
+* [Youtube video](https://www.youtube.com/watch?v=6a8xaTq5VHo)
+* [Download application](https://play.google.com/store/apps/details?id=com.garagedoorsopener)
 
 ![First system](schema1.png)
+
+**I strongly recommand to use a proxy server, like [caddy](https://caddyserver.com/), to have a safe connection thanks HTTPS.**
 
 **Materials you will need for two doors**
 * 1 Arduino Uno *10€*
@@ -68,3 +72,10 @@ The first system is not perfect, because you have to use an Arduino and an ESP82
 Instead of an Arduino and an ESP8266-01, I use now an NodeMCU Lua Lolin V3 Module.
 
 ![System with NodeMCU](schema2.png)
+
+
+## System with Arduino and Ethernet Shield
+
+If you want to use a ethernet cable yon can also do it with the file `arduino-ethernet.ino` file
+
+![System with Arduino and Ethernet Shield](schema3.png)
