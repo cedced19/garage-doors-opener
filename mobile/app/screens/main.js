@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, AsyncStorage, Alert } from 'react-native';
+import { StatusBar, Alert } from 'react-native';
 import { Container, Button, Icon, Text, Content, View, Fab, Card, CardItem, Grid, Col, Left, Body, } from 'native-base';
 import I18n from '../i18n/i18n';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function getAddress (garage, command) {
   return garage.server.replace(/\/\s*$/, '') + '/garage/' + garage.number + '/' + command + '/' + garage.password;
@@ -37,6 +38,7 @@ export default class MainScreen extends Component {
     for (let k in garages) {
       promises.push(fetch(getAddress(this.state.garages[k], 'status'))
       .then((response) => response.json()))
+      .catch((error) => 'error');
       ids.push(k);
     }
     Promise.all(promises).then((p) => {

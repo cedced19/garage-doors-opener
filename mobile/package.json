@@ -1,11 +1,14 @@
 {
-  "name": "mobile",
+  "name": "garagedoorsopener",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "babel-preset-react-native-stage-0": "^1.0.1",
-    "jest-expo": "23.0.0",
-    "react-test-renderer": "16.0.0"
+    "@babel/core": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "^0.54.1",
+    "react-test-renderer": "16.8.3"
   },
   "scripts": {
     "start": "react-native start",
@@ -17,8 +20,10 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "native-base": "^2.3.5",
-    "react": "16.0.0",
+    "@react-native-community/async-storage": "^1.5.0",
+    "native-base": "^2.4.2",
+    "react": "16.8.3",
+    "react-native": "0.59.10",
     "react-native-i18n": "^2.0.10",
     "react-navigation": "^1.0.0-beta.22"
   }

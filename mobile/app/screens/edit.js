@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, Alert, AsyncStorage } from 'react-native';
+import { StatusBar, StyleSheet, Alert } from 'react-native';
 import { Container, Button, Text,  Content, Form, Item, Label, Input } from 'native-base';
 import I18n from '../i18n/i18n';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function makeId() {
   var text = '';
