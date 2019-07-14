@@ -1,13 +1,13 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
+
 const char* ssid = "wifi_name"; // wifi SSID
 const char* password = "wifi_pwd";// wifi password
 #define garage1 0
 #define garage2 2
 ESP8266WebServer server(80);
-MDNSResponder mdns;
+
 void setup(void){
   pinMode(garage1, INPUT);
   pinMode(garage2, INPUT);
@@ -15,7 +15,8 @@ void setup(void){
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+     delay(500);
+     ESP.wdtFeed();
   }
   WiFi.mode(WIFI_STA);
 

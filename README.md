@@ -28,8 +28,8 @@ To use the application you have to use URLs like where `oGXabhvW6k` is the passw
 **I had some conversation with people who wanted to use my app, if you have a question, you may need to read that**
 
 There are  three folder on Github :
-You need to put the arduino.ino code to the Arduino, the ESP8266.ino code to the ESP8266. (it's not easy to do this step)
-Before doing this update the wifi ssid and the wifi pwd in the ESP8266.ino file for your case.
+You need to put the arduino.ino code to the Arduino, the esp8266.ino code to the ESP8266. (it's not easy to do this step)
+Before doing this update the wifi ssid and the wifi pwd in the esp8266.ino file for your case.
 
 Then you just have to connect all the things together.
 
@@ -65,6 +65,6 @@ There are different manufacturers of the ESP8266-01, and so there is little diff
 ## System with NodeMCU
 
 The first system is not perfect, because you have to use an Arduino and an ESP8266-01. I saw afterwards that I can do the system with a ESP8266-12 which have more GPIO
-Instead  of an Arduino and an ESP8266-01, I use now an NodeMCU Lua Lolin V3 Module.
+Instead of an Arduino and an ESP8266-01, I use now an NodeMCU Lua Lolin V3 Module.
 
 ![System with NodeMCU](schema2.png)

@@ -2,15 +2,17 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
-const char* ssid = "wifi_name"; // wifi SSID
-const char* password = "wifi_pwd";// wifi password
+const char* ssid = "claire"; // wifi SSID
+const char* password = "26afaf2004";// wifi password
 #define garageCommand1 14 // D5
 #define garageSensor1 12 // D6
-#define garageCommand2 13 // D7
-#define garageSensor2 15 // D8
+#define garageCommand2 05 // D1
+#define garageSensor2 04 // D2
 ESP8266WebServer server(80);
 
 void setup(void){
+  pinMode(2, OUTPUT); 
+  delay(2000);
   pinMode(garageSensor1, INPUT);
   pinMode(garageSensor2, INPUT);
   pinMode(garageCommand1, OUTPUT);
@@ -19,9 +21,13 @@ void setup(void){
   digitalWrite(garageCommand2, HIGH);
 
   WiFi.begin(ssid, password);
+  
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(2000);
+    digitalWrite(2, LOW);
+    delay(1000);
   }
+  digitalWrite(2, HIGH); 
   WiFi.mode(WIFI_STA);
 
 
