@@ -27,5 +27,7 @@ export default {
     number: 'Numéro',
     status: 'État',
     garage_closed: 'Fermé',
-    garage_not_closed: 'Ouvert'
+    garage_not_closed: 'Ouvert',
+    loading: 'Chargement',
+    loading_message: 'Opération en cours...'
 };

@@ -3,6 +3,8 @@ import { StatusBar, Alert } from 'react-native';
 import { Container, Button, Icon, Text, Content, View, Fab, Card, CardItem, Grid, Col, Left, Body, } from 'native-base';
 import I18n from '../i18n/i18n';
 import AsyncStorage from '@react-native-community/async-storage';
+import DialogProgress from 'react-native-dialog-progress';
+
 
 function getAddress(garage, command) {
   return garage.server.replace(/\/\s*$/, '') + '/garage/' + garage.number + '/' + command + '/' + garage.password;
@@ -13,11 +15,13 @@ export default class MainScreen extends Component {
     super();
     this.state = {
       fabActive: false,
+      orderMode: false,
       noGarage: true,
       garages: [],
       garagesStatus: {}
     };
 
+    this._switchPosition = this._switchPosition.bind(this);
     this._checkStatus = this._checkStatus.bind(this);
     this._checkAllStatus = this._checkAllStatus.bind(this);
     this._removeId = this._removeId.bind(this);
@@ -31,6 +35,44 @@ export default class MainScreen extends Component {
     },
     headerRight: <Button title="Info" />
   };
+
+  _switchPosition(id, position) {
+    DialogProgress.show({
+      title: I18n.t('loading'),
+      message: I18n.t('loading_message'),
+      isCancelable: false
+    });
+    let garages = this.state.garages;
+    let k = garages.findIndex((item) => item.id == id);
+    console.log(id, position);
+    if (k != -1) {
+      let newPosition = k + position;
+      if (newPosition < garages.length && newPosition >= 0) {
+        var temp = garages[k];
+        garages[k] = garages[newPosition];
+        garages[newPosition] = temp;
+
+        AsyncStorage.setItem('garages', JSON.stringify(garages), err => {
+          if (err) {
+            DialogProgress.hide();
+            Alert.alert(
+              I18n.t('error'),
+              I18n.t('error_occured'),
+              [{ text: I18n.t('ok') }]
+            )
+          } else {
+            this.setState({ garages: garages }, () => {
+              DialogProgress.hide();
+            });
+          }
+        });
+      } else {
+        DialogProgress.hide();
+      }
+    } else {
+      DialogProgress.hide();
+    }
+  }
 
   _checkAllStatus() {
     let garages = this.state.garages || [];
@@ -46,13 +88,18 @@ export default class MainScreen extends Component {
       for (let k in p) {
         this.state.garages[ids[k]].closed = p[k].closed;
       }
-      this.setState({ garages })
+      this.setState({ garages });
     })
 
   }
 
   _checkStatus(garage) {
     var garages = this.state.garages;
+    DialogProgress.show({
+      title: I18n.t('loading'),
+      message: I18n.t('loading_message'),
+      isCancelable: false
+    });
     fetch(getAddress(garage, 'status'))
       .then((response) => response.json())
       .then((responseJson) => {
@@ -62,7 +109,8 @@ export default class MainScreen extends Component {
             break;
           }
         }
-        this.setState({ garages })
+        this.setState({ garages });
+        DialogProgress.hide();
       })
       .catch((error) => {
         for (k in garages) {
@@ -71,7 +119,8 @@ export default class MainScreen extends Component {
             break;
           }
         }
-        this.setState({ garages })
+        this.setState({ garages });
+        DialogProgress.hide();
       });
   }
 
@@ -198,28 +247,43 @@ export default class MainScreen extends Component {
           </CardItem>
           <CardItem>
             <Body>
-              <Grid>
-                <Col>
-                  <Button bordered style={{ marginTop: 5 }} onPress={() => this._toggleDoor(garage)}>
-                    <Icon name='md-key' size={60} />
-                  </Button>
-                </Col>
-                <Col>
-                  <Button bordered style={{ marginTop: 5 }} onPress={() => this._checkStatus(garage)}>
-                    <Icon name='md-refresh' size={60} />
-                  </Button>
-                </Col>
-                <Col>
-                  <Button bordered style={{ marginTop: 5 }} onPress={() => navigate('Edit', { id: garage.id, onGoBack: onGoBack })}>
-                    <Icon name='md-create' size={60} />
-                  </Button>
-                </Col>
-                <Col>
-                  <Button bordered style={{ marginTop: 5 }} onPress={() => this._removeId(garage.id)}>
-                    <Icon name='md-trash' size={60} />
-                  </Button>
-                </Col>
-              </Grid>
+              {this.state.orderMode ? (
+                <Grid>
+                  <Col>
+                    <Button bordered style={{ marginTop: 5 }} >
+                      <Icon name='md-arrow-round-up' size={60} onPress={() => this._switchPosition(garage.id, -1)} />
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button bordered style={{ marginTop: 5 }}>
+                      <Icon name='md-arrow-round-down' size={60} onPress={() => this._switchPosition(garage.id, 1)} />
+                    </Button>
+                  </Col>
+                </Grid>
+              ) : (
+                  <Grid>
+                    <Col>
+                      <Button bordered style={{ marginTop: 5 }} onPress={() => this._toggleDoor(garage)}>
+                        <Icon name='md-key' size={60} />
+                      </Button>
+                    </Col>
+                    <Col>
+                      <Button bordered style={{ marginTop: 5 }} onPress={() => this._checkStatus(garage)}>
+                        <Icon name='md-refresh' size={60} />
+                      </Button>
+                    </Col>
+                    <Col>
+                      <Button bordered style={{ marginTop: 5 }} onPress={() => navigate('Edit', { id: garage.id, onGoBack: onGoBack })}>
+                        <Icon name='md-create' size={60} />
+                      </Button>
+                    </Col>
+                    <Col>
+                      <Button bordered style={{ marginTop: 5 }} onPress={() => this._removeId(garage.id)}>
+                        <Icon name='md-trash' size={60} />
+                      </Button>
+                    </Col>
+                  </Grid>
+                )}
             </Body>
           </CardItem>
         </Card>
@@ -248,6 +312,9 @@ export default class MainScreen extends Component {
           position='bottomRight'
           onPress={() => this.setState({ fabActive: !this.state.fabActive })}>
           <Icon name="md-add" />
+          <Button onPress={() => this.setState({ orderMode: !this.state.orderMode })} style={{ backgroundColor: '#2980b9' }}>
+            <Icon name='md-swap' />
+          </Button>
           <Button onPress={() => navigate('Edit', { onGoBack: onGoBack })} style={{ backgroundColor: '#DD5144' }}>
             <Icon name="md-create" />
           </Button>

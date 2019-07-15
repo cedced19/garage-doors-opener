@@ -1,4 +1,6 @@
 rootProject.name = 'garagedoorsopener'
+include ':react-native-dialog-progress'
+project(':react-native-dialog-progress').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-dialog-progress/android')
 include ':@react-native-community_async-storage'
 project(':@react-native-community_async-storage').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/async-storage/android')
 include ':react-native-vector-icons'
