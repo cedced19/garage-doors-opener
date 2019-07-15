@@ -168,9 +168,15 @@ export default class MainScreen extends Component {
       [
         {
           text: I18n.t('yes'), onPress: () => {
+            DialogProgress.show({
+              title: I18n.t('loading'),
+              message: I18n.t('loading_message'),
+              isCancelable: false
+            });
             fetch(getAddress(garage, 'toggle'))
               .then((response) => response.json())
               .then((responseJson) => {
+                DialogProgress.hide();
                 Alert.alert(
                   I18n.t('info'),
                   I18n.t('info_command_sent'),
@@ -178,6 +184,7 @@ export default class MainScreen extends Component {
                 )
               })
               .catch((error) => {
+                DialogProgress.hide();
                 Alert.alert(
                   I18n.t('error'),
                   I18n.t('error_sending_request'),
@@ -210,7 +217,7 @@ export default class MainScreen extends Component {
           let parsed = JSON.parse(data);
           if (parsed.length >= 1) {
             this.setState({ noGarage: false, garages: parsed });
-            this._checkStatus();
+            this._checkStatus(parsed);
           }
         }
       });
