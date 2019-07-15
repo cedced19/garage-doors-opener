@@ -250,13 +250,13 @@ export default class MainScreen extends Component {
               {this.state.orderMode ? (
                 <Grid>
                   <Col>
-                    <Button bordered style={{ marginTop: 5 }} >
-                      <Icon name='md-arrow-round-up' size={60} onPress={() => this._switchPosition(garage.id, -1)} />
+                    <Button bordered style={{ marginTop: 5 }} onPress={() => this._switchPosition(garage.id, -1)} >
+                      <Icon name='md-arrow-round-up' size={60} />
                     </Button>
                   </Col>
                   <Col>
-                    <Button bordered style={{ marginTop: 5 }}>
-                      <Icon name='md-arrow-round-down' size={60} onPress={() => this._switchPosition(garage.id, 1)} />
+                    <Button bordered style={{ marginTop: 5 }} onPress={() => this._switchPosition(garage.id, 1)}>
+                      <Icon name='md-arrow-round-down' size={60} />
                     </Button>
                   </Col>
                 </Grid>
