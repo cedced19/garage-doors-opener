@@ -44,11 +44,10 @@ export default class MainScreen extends Component {
     });
     let garages = this.state.garages;
     let k = garages.findIndex((item) => item.id == id);
-    console.log(id, position);
     if (k != -1) {
       let newPosition = k + position;
       if (newPosition < garages.length && newPosition >= 0) {
-        var temp = garages[k];
+        let temp = garages[k];
         garages[k] = garages[newPosition];
         garages[newPosition] = temp;
 
