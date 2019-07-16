@@ -4,3 +4,4 @@ mobile/android/.gradle/
 mobile/android/app/garage-doors-opener.keystore
 mobile/android/app/gradle.properties
 mobile/react-native-dialog-progress
+mobile/android/app/out

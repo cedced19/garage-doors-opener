@@ -217,7 +217,7 @@ export default class MainScreen extends Component {
           let parsed = JSON.parse(data);
           if (parsed.length >= 1) {
             this.setState({ noGarage: false, garages: parsed });
-            this._checkStatus(parsed);
+            this._checkAllStatus();
           }
         }
       });

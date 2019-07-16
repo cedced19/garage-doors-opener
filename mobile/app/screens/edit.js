@@ -21,7 +21,9 @@ function isUrl (url) {
 function checkEmptyProperties (state) {
   for (var k in state) {
     if (state[k] == '') {
-      return k;
+      if (k != 'closed') {
+        return k;
+      }
     }
   }
   return false;
