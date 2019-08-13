@@ -1,10 +1,11 @@
-var express = require('express');
-var favicon = require('serve-favicon');
-var path = require('path');
-var app = express();
-var helmet = require('helmet');
-var logger = require('morgan');
-var compress = require('compression');
+const express = require('express');
+const favicon = require('serve-favicon');
+const path = require('path');
+const app = express();
+const helmet = require('helmet');
+const logger = require('morgan');
+const compress = require('compression');
+const Gpio = require('onoff').Gpio;
 
 app.use(favicon(path.join(__dirname, 'favicon.ico')));
 
@@ -17,11 +18,45 @@ if (app.get('env') === 'development') {
     app.use(helmet());
 }
 
+
 /*
 
     CHANGE THIS PART
 
 */
+
+/*
+
+    DO NOT CHANGE THIS PART
+
+*/
+
+const toogle = new Gpio(17, 'out');
+toogle.writeSync(true);
+const status = new Gpio(4, 'in', 'both');
+
+app.get('/garage/1/toggle/j0ugKdDQ4', function (req, res, next) {
+    console.log('e')
+    res.send({ toggling: true });
+    toogle.writeSync(false);
+    // Stop blinking the LED after 1 second
+    setTimeout(function () {
+        toogle.writeSync(true);
+    }, 1000);
+});
+
+app.get('/garage/1/status/j0ugKdDQ41', function (req, res, next) {
+    status.read((err, value) => { 
+        if (err) return next(err)
+        res.send({ closed: value });
+    });
+    
+});
+
+
+
+// error handlers
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -30,22 +65,6 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-
-/*
-
-    DO NOT CHANGE THIS PART
-
-*/
-
-app.get('/garage/1/toggle/j0ugKdDQ41', function (req, res, next) {
-    res.send({test:true});
-});
-
-app.get('/garage/1/status/j0ugKdDQ41', function (req, res, next) {
-    res.send({test:true});
-});
-
-// error handlers
 
 // development error handler
 // will print stacktrace
@@ -70,5 +89,7 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
+
+
 
 module.exports = app;

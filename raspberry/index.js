@@ -1,27 +1,26 @@
 #!/usr/bin/env node
 
-var path = require('path');
+const path = require('path');
 
 /**
  * Module dependencies.
  */
 
-var app = require('./app');
-var debug = require('debug')('garage-doors-opener:server');
-var http = require('http');
+const app = require('./app');
+const http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = require('env-port')('8867');
+const port = require('env-port')('8867');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -40,7 +39,7 @@ function onError(error) {
         throw error;
     }
 
-    var bind = typeof port === 'string'
+    const bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
 
