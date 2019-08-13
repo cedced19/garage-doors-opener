@@ -79,3 +79,7 @@ Instead of an Arduino and an ESP8266-01, I use now an NodeMCU Lua Lolin V3 Modul
 If you want to use a ethernet cable yon can also do it with the file `arduino-ethernet.ino` file
 
 ![System with Arduino and Ethernet Shield](schema3.png)
+
+## System with Raspberry Pi
+
+It is quite the same as the system with Arduino and Ethernet Shield.

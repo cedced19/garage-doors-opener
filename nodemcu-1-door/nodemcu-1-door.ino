@@ -24,6 +24,7 @@ void setup(void){
   }
   digitalWrite(2, HIGH); 
   WiFi.mode(WIFI_STA);
+  WiFi.setSleepMode(WIFI_NONE_SLEEP);
 
 
   server.on("/garage/1/toggle/4czODA", [](){
