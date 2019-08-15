@@ -1,0 +1,16 @@
+[Unit]
+Description=Garage Doors Opener
+After=syslog.target network.target
+
+[Service]
+WorkingDirectory=/repos/garage-doors-opener
+ExecStart=/usr/local/bin/pipenv run python3 /repos/garage-doors-opener/index.py
+Restart=always
+RestartSec=10                    
+StandardOutput=syslog            
+StandardError=syslog                
+SyslogIdentifier=garage-doors-opener
+
+
+[Install]
+WantedBy=multi-user.target
