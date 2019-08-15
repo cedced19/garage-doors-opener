@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Garage Doors Opener Clock | Modifier un utilisateurs</title>
+    <link rel='stylesheet' href='/stylesheets/admin-styles.min.css' />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h1>Garage Doors Opener Clock</h1>
+    <p>Modifier le courriel et le mot de passe d'un utilisateurs.</p>
+    <%if (error) { %>
+    <span class="error-box">Une erreur est survenue: veuillez rééssayer.</span>
+    <% } %>
+    <form action="/admin/users/update/<%= email %>" method="post">
+     <label for="email">Courriel:</label>
+     <input type="email" name="email" value="<%= email %>">
+     <label for="password">Mot de passe:</label>
+     <input type="password" name="password">
+     <label for="confirm">Confirmation:</label>
+     <input type="password" name="confirm">
+     <input type="submit" class="btn btn-submit" value="Valider">
+    </form>
+    <p class="nav">
+      <a href="/admin/"><i class="icon-home"></i> Accueil</a>
+      <a href="/admin/users/"><i class="icon-users"></i> Liste des utilisateurs</a>
+      <a href="/admin/logout"><i class="icon-power"></i> Se déconnecter</a>
+    </p>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Garage Doors Opener Clock | Nouveau compte</title>
+    <link rel='stylesheet' href='/stylesheets/admin-styles.min.css' />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h1>Garage Doors Opener Clock</h1>
+    <p>Créer un nouveau compte pour acceder à l'espace de contrôle.</p>
+    <form action="/admin/users/new/" method="post">
+     <label for="email">Courriel:</label>
+     <input type="email" name="email">
+     <label for="password">Mot de passe:</label>
+     <input type="password" name="password">
+     <input type="submit" class="btn btn-submit" value="Valider">
+    </form>
+    <%if (!connected) { %>
+    <p class="nav">
+      <a href="/admin/"><i class="icon-home"></i> Accueil</a>
+      <a href="/admin/users/"><i class="icon-users"></i> Liste des utilisateurs</a>
+      <a href="/admin/logout"><i class="icon-power"></i> Se déconnecter</a>
+    </p>
+    <% } %>
+  </body>
+</html>

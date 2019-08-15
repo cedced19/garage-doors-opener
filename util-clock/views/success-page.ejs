@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Garage Doors Opener Clock | <%if (success == 'user-saved') { %>Utilisateur sauvegardé<% } else if (success == 'user-deleted') { %>Utilisateur supprimé<% } else if (success == 'user-not-deleted') { %>Utilisateur non supprimé<% } else if (success == 'user-updated') { %>Utilisateur modifié<% } %></title>
+    <link rel='stylesheet' href='/stylesheets/admin-styles.min.css' />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h1>Garage Doors Opener Clock</h1>
+    <h2>
+    <%if (success == 'user-saved') { %>
+      Le nouvel utilisateur a été crée.
+    <% } else if (success == 'user-deleted') { %>
+      L'utilisateur a été supprimé avec succès.
+    <% } else if (success == 'user-not-deleted') { %>
+      L'utilisateur n'a pas été supprimé : vous ne pouvez pas supprimer votre propre compte.
+    <% } else if (success == 'user-updated') { %>
+      L'utilisateur a été modifié.
+    <% } %>
+    </h2>
+    <p class="nav">
+      <a href="/admin/"><i class="icon-home"></i> Accueil</a>
+      <a href="/admin/users/"><i class="icon-users"></i> Liste des utilisateurs</a>
+      <a href="/admin/logout"><i class="icon-power"></i> Se déconnecter</a>
+    </p>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Garage Doors Opener Clock | Page de connection</title>
+    <link rel='stylesheet' href='/stylesheets/admin-styles.min.css' />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h1>Garage Doors Opener Clock</h1>
+    <%if (message.length) { %>
+      <span class="error-box">
+      <%if (message[0] == 'invalid-email') { %>
+        Le courriel saisi est invalide.
+      <% } else if (message[0] == 'invalid-password') { %>
+        Le mot de passe saisi est invalide.
+      <% } %>
+      </span>
+    <% } %>
+    <form action="/admin/login" method="post">
+      <label for="email">Courriel:</label>
+      <input type="email" name="email">
+      <label for="password">Mot de passe:</label>
+      <input type="password" name="password">
+      <input type="submit" class="btn btn-submit" value="Valider">
+    </form>
+  </body>
+</html>

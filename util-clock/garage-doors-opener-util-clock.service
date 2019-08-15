@@ -1,0 +1,15 @@
+[Unit]
+Description=Garage Doors Opener Util Clock
+After=syslog.target network.target mongodb.service
+
+[Service]
+ExecStart=/usr/bin/node /repos/garage-doors-opener-util-clock/bin/garage-doors-opener-util-clock
+Restart=always
+RestartSec=10                    
+StandardOutput=syslog            
+StandardError=syslog                
+SyslogIdentifier=garage-doors-opener-util-clock
+Environment=NODE_ENV=production PORT=8001
+
+[Install]
+WantedBy=multi-user.target
