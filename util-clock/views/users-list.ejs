@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Garage Doors Opener Clock</h1>
-    <p>Liste des utilisateurs, vous pouvez en créer un <a href="/admin/users/new">ici</a>.</p>
+    <p>Liste des utilisateurs, vous pouvez en créer un <a href="/users/new">ici</a>.</p>
     <table>
       <tr>
         <th>Courriels</th>
@@ -18,16 +18,16 @@
         <tr>
           <td><%= users[i].email %></td>
           <td>
-            <a class="icon-pencil" href="/admin/users/update/<%= users[i].email %>"></a>
-            <a class="icon-trash" href="/admin/users/delete/<%= users[i].email %>"></a>
+            <a class="icon-pencil" href="/users/update/<%= users[i].email %>"></a>
+            <a class="icon-trash" href="/users/delete/<%= users[i].email %>"></a>
           </td>
         </tr>
       <% } %>
     </table>
     <p class="nav">
-      <a href="/admin/"><i class="icon-home"></i>Accueil</a>
+      <a href="/"><i class="icon-home"></i>Accueil</a>
       <span><i class="icon-users"></i> Liste des utilisateurs</span>
-      <a href="/admin/logout"><i class="icon-power"></i> Se déconnecter</a>
+      <a href="/logout"><i class="icon-power"></i> Se déconnecter</a>
     </p>
   </body>
 </html>

@@ -35,12 +35,12 @@ if (app.get('env') === 'development') {
     app.use(compress());
     app.use(minifyTemplate());
 }
-  
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(helmet());
 
-app.use('/', require('./routes/index'));
+// app.use('/hosts/', require('./routes/hosts'));
 
 app.use(flash());
 app.use(session({
@@ -49,7 +49,7 @@ app.use(session({
     proxy: false,
     resave: true,
     saveUninitialized: true,
-    store:  new FileStore({ path: './tmp/sessions', logFn: function () {} })
+    store: new FileStore({ path: './tmp/sessions', logFn: function () { } })
 }));
 
 app.use(passport.initialize());
@@ -102,6 +102,8 @@ passport.use('local', new LocalStrategy({
     });
 }));
 
+
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Élément introuvable');
@@ -130,7 +132,7 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
-        status: err.status || 500, 
+        status: err.status || 500,
         error: {}
     });
 });

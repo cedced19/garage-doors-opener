@@ -9,7 +9,7 @@
   <body>
     <h1>Garage Doors Opener Clock</h1>
     <p>Créer un nouveau compte pour acceder à l'espace de contrôle.</p>
-    <form action="/admin/users/new/" method="post">
+    <form action="/users/new/" method="post">
      <label for="email">Courriel:</label>
      <input type="email" name="email">
      <label for="password">Mot de passe:</label>
@@ -18,9 +18,9 @@
     </form>
     <%if (!connected) { %>
     <p class="nav">
-      <a href="/admin/"><i class="icon-home"></i> Accueil</a>
-      <a href="/admin/users/"><i class="icon-users"></i> Liste des utilisateurs</a>
-      <a href="/admin/logout"><i class="icon-power"></i> Se déconnecter</a>
+      <a href="/"><i class="icon-home"></i> Accueil</a>
+      <a href="/users/"><i class="icon-users"></i> Liste des utilisateurs</a>
+      <a href="/logout"><i class="icon-power"></i> Se déconnecter</a>
     </p>
     <% } %>
   </body>

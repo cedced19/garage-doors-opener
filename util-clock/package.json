@@ -5,7 +5,7 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "start": "node bin/decouverto-website",
+    "start": "node bin/garage-doors-opener-util-clock",
     "code": "nodemon  --ignore public/ --ignore node_modules/ --ignore build/ -e js bin/garage-doors-opener-util-clock  & gulp serve",
     "build": "gulp"
   },
@@ -40,7 +40,7 @@
     "password-hash-and-salt": "^0.1.4",
     "randomstring": "^1.1.5",
     "rimraf": "^2.6.2",
-    "sails-disk": "^1.1.2",
+    "sails-disk": "^0.10.8",
     "semver": "^5.5.0",
     "serve-favicon": "^2.4.5",
     "serve-index": "^1.9.1",

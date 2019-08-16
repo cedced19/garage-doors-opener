@@ -15,7 +15,7 @@ var format = function(user, cb) {
 
 var Users = Waterline.Collection.extend({
     identity: 'users',
-    connection: 'mongo',
+    connection: 'save',
     autoPK: false,
     autoCreatedAt: false,
     autoUpdatedAt: false,

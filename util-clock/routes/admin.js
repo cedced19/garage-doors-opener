@@ -33,7 +33,7 @@ router.get('/login', function (req, res) {
 
 /* POST login */
 router.post('/login', passport.authenticate('local', {
-    failureRedirect: '/admin/login',
+    failureRedirect: '/login',
     failureFlash: true
 }), function (req, res) {
     res.redirect('/');
@@ -113,7 +113,7 @@ router.post('/users/update/:email', auth, function (req, res) {
         res.locals.error = true;
         res.render('update-user');
     }
-    
+
 });
 
 module.exports = router;

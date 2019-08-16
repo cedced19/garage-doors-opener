@@ -12,7 +12,7 @@
     <%if (error) { %>
     <span class="error-box">Une erreur est survenue: veuillez rééssayer.</span>
     <% } %>
-    <form action="/admin/users/update/<%= email %>" method="post">
+    <form action="/users/update/<%= email %>" method="post">
      <label for="email">Courriel:</label>
      <input type="email" name="email" value="<%= email %>">
      <label for="password">Mot de passe:</label>
@@ -22,9 +22,9 @@
      <input type="submit" class="btn btn-submit" value="Valider">
     </form>
     <p class="nav">
-      <a href="/admin/"><i class="icon-home"></i> Accueil</a>
-      <a href="/admin/users/"><i class="icon-users"></i> Liste des utilisateurs</a>
-      <a href="/admin/logout"><i class="icon-power"></i> Se déconnecter</a>
+      <a href="/"><i class="icon-home"></i> Accueil</a>
+      <a href="/users/"><i class="icon-users"></i> Liste des utilisateurs</a>
+      <a href="/logout"><i class="icon-power"></i> Se déconnecter</a>
     </p>
   </body>
 </html>

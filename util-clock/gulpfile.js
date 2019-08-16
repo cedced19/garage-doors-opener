@@ -61,7 +61,7 @@ gulp.task('default', ['js', 'css']);
 gulp.task('serve', function () {
 
     browserSync.init({
-        proxy: 'http://localhost:' + require('env-port')('8000')
+        proxy: 'http://localhost:' + require('env-port')('8001')
     });
 
     gulp.watch('public/views/*.html', ['reload']);
