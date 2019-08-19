@@ -3,4 +3,21 @@
 <a class="btn" ng-click="disable()" ng-show="up">Désactiver le système</a>
 <a class="btn" ng-click="enable()" ng-hide="up">Activer le système</a>
 <h4>Fermeture la nuit</h4>
+<p>
+    Fermeture prévue à: {{clocks.night.nextTrigger | date:'HH:mm'}} (adaptation en fonction du soleil)
+</p>
+<label for="hour-night">Heure:</label>
+<input type="number" id="hour-night" min="16" max="23" step="1" ng-model="clocks.night.hour">
+<label for="minutes-night">Minute:</label>
+<input type="number" id="minutes-night" min="0" max="50" step="10" ng-model="clocks.night.minute">
+<a class="btn" ng-click="updateClock('night')">Modifier</a>
+<hr>
 <h4>Ouverture le matin</h4>
+<p>
+    Ouverture prévue à:  {{clocks.morning.nextTrigger | date:'HH:mm'}}  (constant)
+</p>
+<label for="hour-morning">Heure:</label>
+<input type="number" id="hour-morning"  min="4" max="10" ng-model="clocks.morning.hour">
+<label for="minutes-morning">Minute:</label>
+<input type="number" id="minutes-morning" min="0" max="50" step="10" ng-model="clocks.morning.minute">
+<a class="btn" ng-click="updateClock('morning')">Modifier</a>
