@@ -1,7 +1,9 @@
 <a class="btn previous" ng-click="$goTo('/')">
     <b>‹</b> Retour</a>
-<a class="btn" ng-click="disable()" ng-show="up">Désactiver le système</a>
-<a class="btn" ng-click="enable()" ng-hide="up">Activer le système</a>
+<a class="btn btn-red" ng-click="toggleSystem(false)" ng-show="clocks.up">Désactiver le système</a>
+<a class="btn btn-green" ng-click="toggleSystem(true)" ng-hide="clocks.up">Activer le système</a>
+<p>Coucher du soleil: {{sunset | date:'HH:mm' }}</p>
+<p>État du système: <span class="green" ng-show="clocks.up">activé</span><span ng-hide="clocks.up" class=red>désactivé</span></p>
 <h4>Fermeture la nuit</h4>
 <p>
     Fermeture prévue à: {{clocks.night.nextTrigger | date:'HH:mm'}} (adaptation en fonction du soleil)

@@ -57,6 +57,7 @@ app.use(passport.session());
 
 app.use('/', require('./routes/admin'));
 app.use('/api/users', require('./routes/users-api'));
+app.use('/api/clocks', require('./routes/clocks-api'));
 
 // authentication
 passport.serializeUser(function (model, done) {

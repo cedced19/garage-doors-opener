@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+
+var path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
 /**
  * Module dependencies.
  */
@@ -26,11 +30,22 @@ var server = http.createServer(app);
 
 var models = require('../models');
 
-models.waterline.initialize(models.config, function(err, models) {
-  if(err) throw err;
+models.waterline.initialize(models.config, function (err, models) {
+  if (err) throw err;
   //  console.log(models.collections);
   app.models = models.collections;
   app.connections = models.connections;
+  app.clocks = require('../libs/json-store-object')({
+    morning: {
+      hour: 6,
+      minute: 30
+    },
+    night: {
+      hour: 20,
+      minute: 0
+    },
+    up: true
+  }, path.resolve(__dirname, '../clocks.json'));
 
   // start Server
   server.listen(port);

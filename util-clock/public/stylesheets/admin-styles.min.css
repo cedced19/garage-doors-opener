@@ -86,6 +86,32 @@ select {
     text-decoration: none;
 }
 
+.btn-green {
+    background: #00b894;
+}
+
+.btn-green:hover {
+    background: #55efc4;
+}
+
+
+.btn-red {
+    background: #d63031;
+    
+}
+
+.btn-red:hover {
+    background: #ff7675;
+}
+
+.red {
+    color: #d63031;
+}
+
+.green {
+    color: #00b894;
+}
+
 .btn-submit {
     float: right;
 }
