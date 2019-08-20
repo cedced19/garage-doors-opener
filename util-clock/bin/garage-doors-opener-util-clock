@@ -3,6 +3,7 @@
 
 var path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+var schedule = require('node-schedule');
 
 /**
  * Module dependencies.
@@ -29,6 +30,7 @@ var server = http.createServer(app);
  */
 
 var models = require('../models');
+var cronTasksManager = require('../libs/cron-tasks-manager');
 
 models.waterline.initialize(models.config, function (err, models) {
   if (err) throw err;
@@ -46,7 +48,10 @@ models.waterline.initialize(models.config, function (err, models) {
     },
     up: true
   }, path.resolve(__dirname, '../clocks.json'));
-
+  cronTasksManager(app.clocks.getAll());
+  schedule.scheduleJob('autoupdate', '0 0 1 * * *', function () {
+    cronTasksManager(app.clocks.getAll());
+  });
   // start Server
   server.listen(port);
   server.on('error', onError);

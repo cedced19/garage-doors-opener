@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var auth = require('../policies/auth.js');
+var auth = require('../policies/auth');
 var hash = require('password-hash-and-salt');
 
 /* GET Users */

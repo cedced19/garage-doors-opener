@@ -1,7 +1,8 @@
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
-var auth = require('../policies/auth.js');
+var auth = require('../policies/auth');
+
 
 /* GET admin page */
 router.get('/', function (req, res, next) {
