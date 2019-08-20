@@ -3,3 +3,4 @@ tmp/
 save.db
 .env
 clocks.json
+keys.json

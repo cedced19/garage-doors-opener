@@ -29,6 +29,7 @@
     "gulp-htmlmin": "^5.0.1",
     "happn-password-hash-and-salt": "^1.2.0",
     "helmet": "^3.11.0",
+    "json-store-list": "0.0.2",
     "memory-cache": "^0.2.0",
     "moment": "^2.22.2",
     "morgan": "^1.9.0",

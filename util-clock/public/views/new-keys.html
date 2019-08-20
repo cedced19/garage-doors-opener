@@ -1,0 +1,8 @@
+<a class="btn previous" ng-click="$goTo('/keys/')"><b>‹</b> Retour</a>
+<form name="formPub">
+    <h4>Fin de validité</h4>
+    <input type="datetime-local" ng-model="date" placeholder="aaaa-MM-ddTHH:mm:ss" />
+    <h4>Nom</h4>
+    <input type="text" ng-model="name">
+    <input type="submit" class="btn btn-submit" value="Valider" ng-click="addKeys()">
+</form>

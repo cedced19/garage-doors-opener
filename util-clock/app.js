@@ -58,6 +58,7 @@ app.use(passport.session());
 app.use('/', require('./routes/admin'));
 app.use('/api/users', require('./routes/users-api'));
 app.use('/api/garage', require('./routes/garage-api'));
+app.use('/api/keys', require('./routes/keys-api'));
 app.use('/api/clocks', require('./routes/clocks-api'));
 
 // authentication

@@ -6,7 +6,6 @@ A tool to configure a clock on a specific door.
 * add the ability to control a lot of door and to add scenarios
 * translate in English
 * publish `json-store-object` to npm
-* use `happn-password-hash-and-salt` package
 
 
 ## Configuration 

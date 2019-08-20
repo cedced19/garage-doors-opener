@@ -1,0 +1,27 @@
+<a class="btn previous" ng-click="$goTo('/')">
+    <b>‹</b> Retour</a>
+<a class="btn" ng-click="$goTo('/keys/new')">Ajouter une clé</a>
+<h2>Liste des clés</h2>
+<table ng-show="keys.length">
+    <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Date</th>
+        <th>Actions</th>
+    </tr>
+    <tr ng-repeat="key in keys">
+        <td>
+            {{key.id}}
+        </td>
+        <td>
+            {{key.name}}
+        </td>
+        <td>
+            {{key.date | date:'HH:mm dd/mm/yy'}}
+        </td>
+        <td>
+            <a class="icon-trash clickable" ng-click="removeKey(key.id)"></a>
+        </td>
+    </tr>
+</table>
+<p ng-hide="keys.length">Aucune clé n'a été ajouté.</p>

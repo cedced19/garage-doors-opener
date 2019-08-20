@@ -37,6 +37,7 @@ models.waterline.initialize(models.config, function (err, models) {
   //  console.log(models.collections);
   app.models = models.collections;
   app.connections = models.connections;
+  app.keys = require('json-store-list')(path.resolve(__dirname, '../keys.json'));
   app.clocks = require('../libs/json-store-object')({
     morning: {
       hour: 6,

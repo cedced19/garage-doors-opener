@@ -15,6 +15,14 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: '/views/clocks.html',
             controller: 'ClocksCtrl'
         })
+        .when('/keys/', {
+            templateUrl: '/views/keys.html',
+            controller: 'KeysCtrl'
+        })
+        .when('/keys/new', {
+            templateUrl: '/views/new-keys.html',
+            controller: 'NewKeysCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });
@@ -29,3 +37,5 @@ app.run(['$rootScope', '$location', 'notie', function ($rootScope, $location,  n
 }]);
 app.controller('HomeCtrl', require('./controllers/home.js'));
 app.controller('ClocksCtrl', require('./controllers/clocks.js'));
+app.controller('KeysCtrl', require('./controllers/keys.js'));
+app.controller('NewKeysCtrl', require('./controllers/new-keys.js'));
