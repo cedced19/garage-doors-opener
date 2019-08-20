@@ -39,6 +39,7 @@
     "passport-local": "^1.0.0",
     "password-hash-and-salt": "^0.1.4",
     "randomstring": "^1.1.5",
+    "request-json": "^0.6.4",
     "rimraf": "^2.6.2",
     "sails-disk": "^0.10.8",
     "semver": "^5.5.0",
