@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Garage Doors Opener | Invité</title>
+  <link rel="stylesheet" href="/stylesheets/host-styles.min.css" />
+  <link rel="manifest" href="/manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <h1>Garage Doors Opener</h1>
+  <h2><%= name %></h2>    
+  <% if (errorMessageHost != '') { %>
+    <p class="error-box"><%= errorMessageHost %></p>
+  <% } %>
+  <p>État actuel: <%if (status.closed) { %><span class=red>fermé</span><% } else { %><span class="green">ouvert</span><% } %></p>
+  <a class="btn" onClick="document.location.reload(true)">Actualiser</a>
+  <a class="btn btn-green" href="./open">Ouvrir</a>
+  <a class="btn btn-red" href="./close">Fermer</a>
+</body>
+</html>
