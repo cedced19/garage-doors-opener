@@ -1,23 +1,31 @@
 var request = require('request-json');
 
 
-function getStatus (cb) {
+function getStatus(cb) {
     var client = request.createClient(process.env.GARAGE_ADDRESS);
-    client.get(`/garage/${process.env.GARAGE_NUMBER}/status/${process.env.GARAGE_PASSWORD}`, function(err, res, body) {
+    client.get(`/garage/${process.env.GARAGE_NUMBER}/status/${process.env.GARAGE_PASSWORD}`, function (err, res, body) {
         cb(err, body);
     });
 }
 
-function toggle (closed, cb) {
+function forceToggle(cb) {
+    var client = request.createClient(process.env.GARAGE_ADDRESS);
+    client.get(`/garage/${process.env.GARAGE_NUMBER}/toggle/${process.env.GARAGE_PASSWORD}`, function (err) {
+        if (err) return cb(err);
+        cb(null, { toggling: true });
+    });
+}
+
+function toggle(closed, cb) {
     getStatus(function (err, status) {
         if (err) return cb(err);
         if (status.closed == closed) {
-            cb(null,status);
+            cb(null, status);
         } else {
             var client = request.createClient(process.env.GARAGE_ADDRESS);
-            client.get(`/garage/${process.env.GARAGE_NUMBER}/toggle/${process.env.GARAGE_PASSWORD}`, function(err) {
+            client.get(`/garage/${process.env.GARAGE_NUMBER}/toggle/${process.env.GARAGE_PASSWORD}`, function (err) {
                 if (err) return cb(err);
-                cb(null,{closed: closed});
+                cb(null, { closed: closed });
             });
         }
     })
@@ -30,5 +38,6 @@ module.exports = {
     close: function (cb) { // `close(function (err) {...})` close if not closed
         toggle(true, cb);
     },
-    status: getStatus 
+    status: getStatus,
+    toggle: forceToggle
 }

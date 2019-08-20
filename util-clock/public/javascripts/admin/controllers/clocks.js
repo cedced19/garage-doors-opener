@@ -1,4 +1,4 @@
-module.exports = ['$scope', '$http', '$rootScope', 'notie', '$location', function ($scope, $http, $rootScope, notie) {
+module.exports = ['$scope', '$http', '$rootScope', 'notie', function ($scope, $http, $rootScope, notie) {
     $scope.clocks = {
         morning: {
             hour: 6,

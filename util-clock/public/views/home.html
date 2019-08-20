@@ -1,3 +1,8 @@
+<p>État actuel: <span class="green" ng-hide="closed" >ouvert</span><span ng-show="closed" class=red>fermé</span></p>
+<a class="btn btn-green" ng-click="garageInterface('status')" >Actualiser</a>
+<a class="btn" ng-click="garageInterface('open')" ng-show="closed">Ouvrir</a>
+<a class="btn" ng-click="garageInterface('close')" ng-hide="closed">Fermer</a>
+<a class="btn btn-red" ng-click="garageInterface('toggle')">Forcer le contact</a>
 <div class="list-action">
     <a class="btn" ng-click="$goTo('/clocks/')">Gestion de la minutrie</a>
     <a class="btn" ng-click="$goTo('/keys/')">Gestion des clés temporaires</a>
