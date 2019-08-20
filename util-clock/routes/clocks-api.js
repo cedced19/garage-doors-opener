@@ -18,10 +18,11 @@ router.get('/', auth, function (req, res) {
 
 /* PUT toggle system */
 router.put('/toggle', auth, function(req, res, next) {
-    if (req.body.toggle == !req.app.clocks.get('up')) {
+    var actual = req.app.clocks.get('up');
+    if (req.body.up == actual) {
         res.json({changed: false, up: req.body.up});
     } else {
-        req.app.clocks.put('up', !req.app.clocks.get('up'), function(err, model) {
+        req.app.clocks.put('up', !actual, function(err, model) {
             if(err) return next(err);
             // Stop or start event there
             res.json({changed: true, up: req.body.up});
