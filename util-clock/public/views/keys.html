@@ -1,19 +1,24 @@
 <a class="btn previous" ng-click="$goTo('/')">
     <b>‹</b> Retour</a>
 <a class="btn" ng-click="$goTo('/keys/new')">Ajouter une clé</a>
+<div ng-hide="url == ''">
+    <h3>Clé à partager</h3>
+    <pre>{{url}}</pre>
+</div>
 <h2>Liste des clés</h2>
+<p>Les clés périmées sont détruites chaque jour à 1h automatiquement.</p>
 <table ng-show="keys.length">
     <tr>
         <th>Id</th>
         <th>Nom</th>
-        <th>Date</th>
+        <th>Date de fin</th>
         <th>Actions</th>
     </tr>
     <tr ng-repeat="key in keys">
-        <td>
+        <td ng-click="share(key.id)" class="clickable">
             {{key.id}}
         </td>
-        <td>
+        <td ng-click="share(key.id)" class="clickable">
             {{key.name}}
         </td>
         <td>

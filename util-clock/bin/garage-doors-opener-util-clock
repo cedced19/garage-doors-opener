@@ -49,10 +49,23 @@ models.waterline.initialize(models.config, function (err, models) {
     },
     up: true
   }, path.resolve(__dirname, '../clocks.json'));
+
+
   cronTasksManager(app.clocks.getAll());
   schedule.scheduleJob('autoupdate', '0 0 1 * * *', function () {
     cronTasksManager(app.clocks.getAll());
+    // Auto delete old keys
+    var keys = app.keys.getAll();
+    keys.forEach(function (el) {
+      if ((new Date(el.date)).getTime() < (new Date()).getTime()) {
+        app.keys.delete('id', el.id, function(err) {
+          if (err) console.error(err);
+        });
+      }
+    })
   });
+
+
   // start Server
   server.listen(port);
   server.on('error', onError);
