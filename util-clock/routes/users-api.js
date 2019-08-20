@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var auth = require('../policies/auth');
-var hash = require('password-hash-and-salt');
+var hash = require('happn-password-hash-and-salt');
 
 /* GET Users */
 router.get('/', auth, function(req, res, next) {

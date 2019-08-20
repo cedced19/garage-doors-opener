@@ -1,5 +1,5 @@
 var Waterline = require('waterline');
-var hash = require('password-hash-and-salt');
+var hash = require('happn-password-hash-and-salt');
 
 var format = function(user, cb) {
     if (user.password) {
