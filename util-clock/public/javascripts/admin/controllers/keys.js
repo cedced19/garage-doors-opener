@@ -6,7 +6,7 @@ module.exports = ['$scope', '$http', '$rootScope', 'notie', '$location', functio
 
     $scope.url = '';
     $scope.share = function (id) {
-        $scope.url = location.protocol + '//' + location.host + '/hosts/' + id;
+        $scope.url = location.protocol + '//' + location.host + '/hosts/' + id + '/';
     }
 
     $scope.removeKey = function (id) {
