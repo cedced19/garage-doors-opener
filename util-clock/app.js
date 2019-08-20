@@ -40,7 +40,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(helmet());
 
-// app.use('/hosts/', require('./routes/hosts'));
 
 app.use(flash());
 app.use(session({
@@ -51,6 +50,8 @@ app.use(session({
     saveUninitialized: true,
     store: new FileStore({ path: './tmp/sessions', logFn: function () { } })
 }));
+
+app.use('/hosts/', require('./routes/hosts'));
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -21,6 +21,14 @@ gulp.task('css-admin', function () {
     .pipe(gulp.dest('public/stylesheets/'));
 });
 
+gulp.task('css-host', function () {
+    return gulp.src('public/stylesheets/host-styles.css')
+    .pipe(isDist ? csso() : through())
+    .pipe(isDist ? autoprefixer('last 2 versions', { map: false }) : through())
+    .pipe(rename('host-styles.min.css'))
+    .pipe(gulp.dest('public/stylesheets/'));
+});
+
 
 gulp.task('js-admin', function () {
     var b = browserify({
@@ -42,6 +50,10 @@ gulp.task('css-admin-watch', ['css-admin'], function (done) {
     browserSync.reload();
     done();
 });
+gulp.task('css-host-watch', ['css-host'], function (done) {
+    browserSync.reload();
+    done();
+});
 gulp.task('js-admin-watch', ['js-admin'], function (done) {
     browserSync.reload();
     done();
@@ -52,7 +64,7 @@ gulp.task('reload', function (done) {
 });
 
 gulp.task('js', ['js-admin']);
-gulp.task('css', ['css-admin']);
+gulp.task('css', ['css-admin', 'css-host']);
 
 gulp.task('default', ['js', 'css']);
 
@@ -68,6 +80,7 @@ gulp.task('serve', function () {
     gulp.watch('views/*.ejs', ['reload']);
 
     gulp.watch('public/stylesheets/admin-styles.css', ['css-admin-watch']);
+    gulp.watch('public/stylesheets/host-styles.css', ['css-host-watch']);
     gulp.watch(['public/javascripts/admin/**/**.js', '!public/javascripts/admin/build.js'], ['js-admin-watch']);
 });
 

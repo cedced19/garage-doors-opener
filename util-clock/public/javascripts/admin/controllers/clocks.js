@@ -76,6 +76,5 @@ module.exports = ['$scope', '$http', '$rootScope', 'notie', function ($scope, $h
             $scope.clocks.up = data.up;
             notie.alert(1, 'La minuterie a bien été ' + (data.up ? 'activée.': 'stoppée.'), 3);
         }).error($rootScope.$error);
-
     }
 }];
