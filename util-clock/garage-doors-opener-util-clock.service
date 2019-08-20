@@ -1,9 +1,9 @@
 [Unit]
 Description=Garage Doors Opener Util Clock
-After=syslog.target network.target mongodb.service
+After=syslog.target network.target
 
 [Service]
-ExecStart=/usr/bin/node /repos/garage-doors-opener-util-clock/bin/garage-doors-opener-util-clock
+ExecStart=/usr/bin/node /repos/garage-doors-opener-clock/bin/garage-doors-opener-util-clock
 Restart=always
 RestartSec=10                    
 StandardOutput=syslog            
