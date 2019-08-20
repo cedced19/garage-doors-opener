@@ -14,7 +14,7 @@ function getNightDate(clock) {
     var h = clock.hour, m = clock.minute;
     var tmpDate = new Date();
     if (tmpDate.getHours() > h) {
-        tmpDate.setDate(date.getDate() + 1);
+        tmpDate.setDate(tmpDate.getDate() + 1);
     }
     tmpDate.setHours(h);
     tmpDate.setMinutes(m);

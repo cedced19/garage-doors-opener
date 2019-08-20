@@ -30,7 +30,7 @@ module.exports = ['$scope', '$http', '$rootScope', 'notie', function ($scope, $h
         if (name == 'night') {
             var tmpDate = new Date();
             if (tmpDate.getHours() > h) {
-                tmpDate.setDate(date.getDate() + 1);
+                tmpDate.setDate(tmpDate.getDate() + 1);
             }
             tmpDate.setHours(Number(h));
             tmpDate.setMinutes(Number(m));

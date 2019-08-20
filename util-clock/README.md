@@ -20,3 +20,8 @@ COORDS_LAT=48.767079
 COORDS_LNG=7.258748
 GARAGE_NAME=Portail
 ```
+
+## Demo
+
+![Demo 1](demo/demo1.png)
+![Demo 2](demo/demo2.png)
