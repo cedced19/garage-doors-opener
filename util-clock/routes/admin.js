@@ -32,6 +32,19 @@ router.get('/login', function (req, res) {
     res.render('login');
 });
 
+
+/* GET authenticated page */
+router.get('/authenticated', function(req, res) {
+    if (req.isAuthenticated()) {
+      res.json({
+        status: true,
+        user: req.user
+      });
+    } else {
+      res.json({ status: false });
+    }
+});
+
 /* POST login */
 router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',

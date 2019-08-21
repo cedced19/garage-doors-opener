@@ -2,7 +2,13 @@
 module.exports = function (req, res, next) {
     if (req.app.get('configurated')) {
         if (!req.isAuthenticated()) {
-            res.redirect('/login');
+            if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+                var err = new Error('Forbidden');
+                err.status = 401;
+                next(err);
+            } else {
+                res.redirect('/login');
+            }
         } else {
             next();
         }
@@ -14,7 +20,13 @@ module.exports = function (req, res, next) {
             } else {
                 req.app.set('configurated', true); 
                 if (!req.isAuthenticated()) {
-                    res.redirect('/login');
+                    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+                        var err = new Error('Forbidden');
+                        err.status = 401;
+                        next(err);
+                    } else {
+                        res.redirect('/login');
+                    }
                 } else {
                     next();
                 }

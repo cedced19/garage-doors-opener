@@ -1,6 +1,6 @@
 this.addEventListener('install', function(event) {
     event.waitUntil(
-      caches.open('garage-doors-opener-clock-1566371460264').then(function(cache) {
+      caches.open('garage-doors-opener-clock-1566417780236').then(function(cache) {
         return cache.addAll([
           '/',
           '/favicon.ico',
@@ -12,12 +12,12 @@ this.addEventListener('install', function(event) {
   });
   
   this.addEventListener('fetch', function(event) {
-    if (event.request.method !== 'GET') {
+    if (event.request.method !== 'GET' || /authenticated|login|logout/.test(event.request.url)) {
       return;
     }
     var get = function () {
       return fetch(event.request).then(function(response) {
-        return caches.open('garage-doors-opener-clock-1566371460264').then(function(cache) {
+        return caches.open('garage-doors-opener-clock-1566417780236').then(function(cache) {
           cache.put(event.request, response.clone());
           return response;
         });
@@ -29,7 +29,7 @@ this.addEventListener('install', function(event) {
         .match(event.request)
         .then(function(cached) {
           // get the latest updates from API
-          if (/api/.test(event.request.url)) {
+          if (/api|hosts/.test(event.request.url)) {
             return get().catch(function () {
               return cached;
             });
@@ -47,7 +47,7 @@ this.addEventListener('install', function(event) {
   });
   
   this.addEventListener('activate', function(event) {
-    var cacheWhitelist = ['garage-doors-opener-clock-1566371460264'];
+    var cacheWhitelist = ['garage-doors-opener-clock-1566417780236'];
   
     event.waitUntil(
       caches.keys().then(function(keyList) {

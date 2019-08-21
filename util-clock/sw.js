@@ -12,7 +12,7 @@ this.addEventListener('install', function(event) {
   });
   
   this.addEventListener('fetch', function(event) {
-    if (event.request.method !== 'GET') {
+    if (event.request.method !== 'GET' || /authenticated|login|logout/.test(event.request.url)) {
       return;
     }
     var get = function () {
@@ -29,7 +29,7 @@ this.addEventListener('install', function(event) {
         .match(event.request)
         .then(function(cached) {
           // get the latest updates from API
-          if (/api/.test(event.request.url)) {
+          if (/api|hosts/.test(event.request.url)) {
             return get().catch(function () {
               return cached;
             });
