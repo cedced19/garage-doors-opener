@@ -2,6 +2,9 @@ require('angular'); /*global angular*/
 require('angular-route');
 require('ng-notie');
 
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' });
+}
 
 var app = angular.module('GarageDoorsOpenerClock', ['ngNotie', 'ngRoute']);
 app.config(['$routeProvider', function($routeProvider) {

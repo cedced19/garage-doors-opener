@@ -1,7 +1,7 @@
 {
     "name": "Garage Doors Opener Util Clock",
     "short_name": "Garage Doors Opener Clock",
-    "start_url": "./",
+    "start_url": "/",
     "display": "standalone",
     "orientation": "portrait",
     "icons": [{
