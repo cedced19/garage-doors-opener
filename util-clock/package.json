@@ -60,6 +60,7 @@
     "gulp-cli": "^2.0.1",
     "gulp-csso": "^3.0.1",
     "gulp-rename": "^1.4.0",
+    "gulp-template": "^5.0.0",
     "gulp-uglify": "^3.0.1",
     "gulplog": "^1.0.0",
     "nodemon": "^1.17.1",

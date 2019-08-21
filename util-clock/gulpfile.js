@@ -9,7 +9,7 @@ var rename = require('gulp-rename');
 var csso = require('gulp-csso');
 var autoprefixer = require('gulp-autoprefixer');
 var through = require('through');
-var htmlmin = require('gulp-htmlmin');
+var template = require('gulp-template');
 
 var isDist = process.argv.indexOf('serve') === -1;
 
@@ -66,7 +66,13 @@ gulp.task('reload', function (done) {
 gulp.task('js', ['js-admin']);
 gulp.task('css', ['css-admin', 'css-host']);
 
-gulp.task('default', ['js', 'css']);
+gulp.task('sw', () =>
+    gulp.src('sw.js')
+        .pipe(template({time: (new Date()).getTime()}))
+        .pipe(gulp.dest('public'))
+);
+
+gulp.task('default', ['sw', 'js', 'css']);
 
 
 
