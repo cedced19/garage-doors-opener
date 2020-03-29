@@ -1,0 +1,9 @@
+{
+    "restart": "Redémarrage",
+    "tonight_control": "Contrôle du soir",
+    "regular_check": "Contrôle régulier",
+    "warning_message": "Attention porte ouverte",
+    "open": "ouvert",
+    "closed": "fermé",
+    "undefined": "indéfini"
+}
