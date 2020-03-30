@@ -17,9 +17,11 @@ function getAddress(garage) {
 
 function check (cb) {
     var result = {}
+    var single = {}
     var promises = []
     list.forEach(function(garage) {
         result[garage.nickname] = -1
+        single[garage.nickname] = garage.single
         prom = new Promise(function(resolve, reject) {
             get.concat({
                 url: getAddress(garage),
@@ -37,7 +39,7 @@ function check (cb) {
         promises.push(prom)
     });
     Promise.all(promises).then(_ => { 
-        cb(result);
+        cb(result, single);
     });
 }
 
@@ -60,10 +62,10 @@ function sendMail (subject, text) {
 }
 
 
-function mail (object, status) {
+function mail (object, status, single) {
     var subject = lang[object];
     var one_open = false;
-    var text = moment().format('DD MMMM YYYY hh:mm');
+    var text = moment().format('DD MMMM YYYY HH:mm');
     text+='<br><br>';
     for (i in status) {
         text += i + ': '
@@ -75,7 +77,9 @@ function mail (object, status) {
         }
         if (status[i] == 1) {
             text+= '<b>' + lang['open'] + '</b>';
-            one_open=true;
+            if (!single[i]) {
+                one_open=true;
+            }
         }
         text+='<br>';
     }
@@ -89,16 +93,16 @@ function mail (object, status) {
 }
 
 
-check(function (result) {
-    mail('restart', result)
+check(function (result, single) {
+    mail('restart', result, single)
 });
 
 /* 
     Check if some doors are closed each 5 hours
 */
 schedule.scheduleJob('regulary', '0 */5 * * *', function () {
-    check(function (result) {
-        mail('regular_check', result)
+    check(function (result, single) {
+        mail('regular_check', result, single)
     });
 });
 
@@ -107,7 +111,7 @@ schedule.scheduleJob('regulary', '0 */5 * * *', function () {
     Check if all is closed at 21:50
 */
 schedule.scheduleJob('single', '50 21 * * *', function () {
-    check(function (result) {
-        mail('tonight_control', result)
+    check(function (result, single) {
+        mail('tonight_control', result, single)
     });
 });
