@@ -28,10 +28,10 @@ void tick()
 
 //gets called when WiFiManager enters configuration mode
 void configModeCallback (WiFiManager *myWiFiManager) {
-  Serial.println("Entered config mode");
-  Serial.println(WiFi.softAPIP());
+  //Serial.println("Entered config mode");
+  //Serial.println(WiFi.softAPIP());
   //if you used auto generated SSID, print it
-  Serial.println(myWiFiManager->getConfigPortalSSID());
+  //Serial.println(myWiFiManager->getConfigPortalSSID());
   //entered config mode, make led toggle faster
   ticker.attach(0.2, tick);
 }
@@ -39,7 +39,7 @@ void configModeCallback (WiFiManager *myWiFiManager) {
 void setup() {
   WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
   // put your setup code here, to run once:
-  Serial.begin(115200);
+  //Serial.begin(115200);
   
   //set led pin as output
   pinMode(LED, OUTPUT);
@@ -60,14 +60,14 @@ void setup() {
   //here  "AutoConnectAP"
   //and goes into a blocking loop awaiting configuration
   if (!wm.autoConnect()) {
-    Serial.println("failed to connect and hit timeout");
+    //Serial.println("failed to connect and hit timeout");
     //reset and try again, or maybe put it to deep sleep
     ESP.restart();
     delay(1000);
   }
 
   //if you get here you have connected to the WiFi
-  Serial.println("connected...yeey :)");
+  //Serial.println("connected...yeey :)");
   ticker.detach();
   //keep LED off
   digitalWrite(LED, HIGH);
