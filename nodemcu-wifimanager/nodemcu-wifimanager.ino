@@ -37,6 +37,13 @@ void configModeCallback (WiFiManager *myWiFiManager) {
 }
 
 void setup() {
+  pinMode(garageSensor1, INPUT);
+  pinMode(garageSensor2, INPUT);
+  pinMode(garageCommand1, OUTPUT);
+  pinMode(garageCommand2, OUTPUT);
+  digitalWrite(garageCommand1, HIGH);
+  digitalWrite(garageCommand2, HIGH);
+  
   WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
   // put your setup code here, to run once:
   //Serial.begin(115200);
