@@ -56,6 +56,7 @@ void setup() {
   //WiFiManager
   //Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wm;
+  wm.setConfigPortalTimeout(180);
   //reset settings - for testing
   //wm.resetSettings();
 

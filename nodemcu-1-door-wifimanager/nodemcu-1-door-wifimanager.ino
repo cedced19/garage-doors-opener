@@ -41,7 +41,7 @@ void setup() {
   WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
   // put your setup code here, to run once:
   //Serial.begin(115200);
-  
+
   //set led pin as output
   pinMode(LED, OUTPUT);
   // start ticker with 0.5 because we start in AP mode and try to connect
@@ -50,6 +50,7 @@ void setup() {
   //WiFiManager
   //Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wm;
+  wm.setConfigPortalTimeout(180);
   //reset settings - for testing
   //wm.resetSettings();
 
@@ -77,8 +78,8 @@ void setup() {
 
   server.on("/garage/1/toggle/4czODA", [](){
     server.send(200, "application/json", "{\"toggling\":true}");
-    digitalWrite(garageCommand1, LOW);   
-    delay(1000);                      
+    digitalWrite(garageCommand1, LOW);
+    delay(1000);
     digitalWrite(garageCommand1, HIGH);
   });
 
