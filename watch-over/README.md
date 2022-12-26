@@ -29,3 +29,27 @@ Create a `config.json` file and fill it like this:
     ]  
 }
 ```
+
+
+## Docker
+
+Build docker image:
+```
+docker build -t watch-over .
+```
+
+Test:
+```
+docker-compose up
+```
+
+Docker compose:
+```
+docker-compose up -d
+```
+
+Share to [Docker Hub](https://hub.docker.com/r/cedced19/watch-over):
+```
+docker tag watch-over:latest cedced19/watch-over:latest
+docker push cedced19/watch-over:latest
+```
