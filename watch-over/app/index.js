@@ -65,7 +65,7 @@ function sendMail (subject, text) {
 function mail (object, status, single) {
     var subject = lang[object];
     var one_open = false;
-    var text = moment().format('DD MMMM YYYY HH:mm');
+    var text = moment().local().format('DD MMMM YYYY HH:mm');
     text+='<br><br>';
     for (i in status) {
         text += i + ': '

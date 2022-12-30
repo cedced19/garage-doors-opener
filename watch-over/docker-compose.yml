@@ -2,8 +2,10 @@ version: '3'
 services:
   watch_over: 
     image: watch-over
-    command: sh -c "node index.js"
+    command: node index.js
     restart: always
+    environment:
+      - TZ=Europe/Paris
     volumes:
       - ./config.json:/app/config.json
       - ./list.json:/app/list.json
