@@ -171,18 +171,21 @@ export default function MainScreen() {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
         {orderMode ? (
           <View>
-            <Button title="Up" onPress={() => switchPosition(garage.id, -1)} />
-            <Button title="Down" onPress={() => switchPosition(garage.id, 1)} />
+            <Button onPress={() => switchPosition(garage.id, -1)} 
+              icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="arrow-up-outline"/>} 
+            />
+            <Button onPress={() => switchPosition(garage.id, 1)}
+              icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="arrow-down-outline"/>} />
           </View>
         ) : (
           <View>
-            <Button title="Toggle" onPress={() => toggleDoor(garage)} />
-            <Button title="Refresh" onPress={() => checkStatus(garage)} />
-            <Button title="Edit" onPress={() => {
+            <Button icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="key-outline"/>} onPress={() => toggleDoor(garage)} />
+            <Button icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="refresh-outline"/>} onPress={() => checkStatus(garage)} />
+            <Button icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="pencil-outline"/>} onPress={() => {
               defineCurrentGarage(garage);
               router.navigate('./add-garage');
             }} />
-            <Button title="Delete" onPress={() => removeId(garage.id)} />
+            <Button icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="trash-outline"/>} onPress={() => removeId(garage.id)} />
           </View>
         )}
       </View>
