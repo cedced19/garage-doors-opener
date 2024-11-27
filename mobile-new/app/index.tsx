@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StatusBar, Alert, View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StatusBar, Alert, View, Text, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button } from 'react-native-elements';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -151,19 +151,29 @@ export default function MainScreen() {
 
   const renderGarageStatus = (garage) => {
     if (garage.closed === true) {
-      return <Text>Status: Garage Closed</Text>;
+      return <View>
+        <Ionicons size={40} style={{ marginEnd: 5, color: '#000' }} name="lock-closed-outline"/>
+        <Text style={{ fontSize: 17 }}>Status: Garage Closed</Text>
+      </View>
+      return ;
     } else if (garage.closed === false) {
-      return <Text>Status: Garage Open</Text>;
+      return <View>
+        <Ionicons size={40} style={{ marginEnd: 5, color: '#000' }} name="lock-open-outline"/>
+        <Text style={{ fontSize: 17 }}>Status: Garage Open</Text>
+      </View>;
     } else {
-      return <Text>Error requesting status</Text>;
+      return <View>
+        <Ionicons size={40} style={{ marginEnd: 5, color: '#000' }} name="warning-outline"/>
+        <Text style={{ fontSize: 17 }}>Error requesting status</Text>;
+      </View>
     }
   };
 
   const garageDiv = garages.map((garage) => (
     <View style={{ marginBottom: 10, padding: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 5 }} key={garage.id}>
       <View>
-        <Text>{garage.nickname}</Text>
-        <Text>Number {garage.number}</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{garage.nickname}</Text>
+        <Text style={{ color: 'grey', fontSize: 14 }}>Number {garage.number}</Text>
       </View>
       <View>
         {renderGarageStatus(garage)}
@@ -198,11 +208,9 @@ export default function MainScreen() {
   return (
     <View style={{ flex: 1, padding: 10 }}>
       <StatusBar backgroundColor='#5880b7' />
-      {loading && (
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-        <ActivityIndicator size="large" color="#7496c4" />
-      </View>
-      )}
+      <CustomWaiting
+              visible={loading} 
+      />
       <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
       {(garages.length == 0) ? (
         <Text>No garages added.</Text>
@@ -243,3 +251,14 @@ export default function MainScreen() {
     </View>
   );
 }
+
+const CustomWaiting = ({ visible }) => (
+  <Modal visible={visible}>
+    <View style={{ flex: 1, backgroundColor: "#00000020", justifyContent: "center", alignItems: "center" }}>
+      <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5, width: "80%", alignItems: "center" }}>
+        <Text style={{ fontSize: 20 }}>Loading</Text>
+        <ActivityIndicator size="large" color="#7496c4" />
+      </View>
+    </View>
+  </Modal>
+);
