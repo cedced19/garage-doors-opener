@@ -5,7 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-
+import { GlobalProvider } from './lib/global-context';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -29,20 +29,22 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{
-        headerStyle: {
-          backgroundColor: '#7496c4',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}>
-        <Stack.Screen name="index" options={{ headerShown: true, title: 'Accueil' }} />
-        <Stack.Screen name="add-garage" options={{ headerShown: true, title: 'Add garage' }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+      <GlobalProvider>
+        <Stack screenOptions={{
+          headerStyle: {
+            backgroundColor: '#7496c4',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+          <Stack.Screen name="index" options={{ headerShown: true, title: 'Home' }} />
+          <Stack.Screen name="add-garage" options={{ headerShown: true, title: 'Edit garage' }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </GlobalProvider>
     </ThemeProvider>
   );
 }

@@ -1,221 +1,196 @@
-import React, { useState, useEffect } from 'react';
-import { StatusBar, Alert, View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  StyleSheet, 
+  StatusBar, 
+  TouchableOpacity, 
+  ScrollView, 
+  Alert 
+} from 'react-native';
+import { GlobalContext } from './lib/global-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Button } from 'react-native-elements';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from 'expo-router';
 
-function getAddress(garage, command) {
-  return garage.server.replace(/\/\s*$/, '') + '/garage/' + garage.number + '/' + command + '/' + garage.password;
+// Utility functions
+function makeId() {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from({length: 5}, () => 
+    possible.charAt(Math.floor(Math.random() * possible.length))
+  ).join('');
 }
 
-export default function MainScreen({ navigation }) {
-  const [fabActive, setFabActive] = useState(false);
-  const [orderMode, setOrderMode] = useState(false);
-  const [noGarage, setNoGarage] = useState(true);
-  const [garages, setGarages] = useState([]);
-  const [loading, setLoading] = useState(false);
+function isUrl(url) {
+  return /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(url);
+}
+
+function checkEmptyProperties(state) {
+  for (const k in state) {
+    if (state[k] === '' && k !== 'closed') {
+      return k;
+    }
+  }
+  return false;
+}
+
+export default function EditScreen() {
+  const { currentGarage, garageDefined, defineCurrentGarage, removeCurrentGarage, garages, setGarages } = useContext(GlobalContext);
+  const [server, setServer] = useState('');
+  const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [number, setNumber] = useState('');
+  const [id, setId] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
-    loadGarages();
+    if (garageDefined) {
+      loadExistingGarage(currentGarage);
+    } else {
+      // Generate new ID for new garage
+      setId(makeId());
+    }
   }, []);
 
-  const loadGarages = async () => {
+  const loadExistingGarage = (garage) => {
+          setServer(garage.server);
+          setPassword(garage.password);
+          setNickname(garage.nickname);
+          setNumber(garage.number);
+          setId(garage.id);
+  };
+
+  const saveConfig = async () => {
+    // Validation
+    const emptyProperty = checkEmptyProperties({ server, password, nickname, number });
+    if (emptyProperty) {
+      Alert.alert('Error', `Please fill in the ${emptyProperty} field`);
+      return;
+    }
+
+    if (isNaN(Number(number))) {
+      Alert.alert('Error', 'Invalid garage number');
+      return;
+    }
+
+    if (!isUrl(server)) {
+      Alert.alert('Error', 'Invalid server address');
+      return;
+    }
+
     try {
+      // Retrieve existing garages
       const data = await AsyncStorage.getItem('garages');
-      if (data) {
-        const parsed = JSON.parse(data);
-        if (parsed.length >= 1) {
-          setNoGarage(false);
-          setGarages(parsed);
-          checkAllStatus(parsed);
-        }
+      let parsed = data ? JSON.parse(data) : [];
+
+      // Prepare garage object
+      const garageData = { server, password, nickname, number, id };
+
+      // Update or add garage
+      if (garageDefined) {
+        // Update existing garage
+        parsed = parsed.map(g => g.id === currentGarage.id ? garageData : g);
+      } else {
+        // Add new garage
+        parsed.push(garageData);
       }
+
+      // Save updated garages
+      await AsyncStorage.setItem('garages', JSON.stringify(parsed));
+      removeCurrentGarage();
+      router.replace('/');
+
     } catch (error) {
-      console.error('Error loading garages:', error);
+      Alert.alert('Error', 'Failed to save garage configuration');
     }
   };
-
-  const switchPosition = async (id, position) => {
-    setLoading(true);
-    try {
-      const updatedGarages = [...garages];
-      const k = updatedGarages.findIndex((item) => item.id === id);
-      
-      if (k !== -1) {
-        const newPosition = k + position;
-        if (newPosition < updatedGarages.length && newPosition >= 0) {
-          // Swap garages
-          [updatedGarages[k], updatedGarages[newPosition]] = [updatedGarages[newPosition], updatedGarages[k]];
-          
-          await AsyncStorage.setItem('garages', JSON.stringify(updatedGarages));
-          setGarages(updatedGarages);
-        }
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to update garage order');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const checkAllStatus = async (garagesArray = garages) => {
-    try {
-      const promises = garagesArray.map(async (garage) => {
-        try {
-          const response = await fetch(getAddress(garage, 'status'));
-          return await response.json();
-        } catch (error) {
-          return { closed: 'error' };
-        }
-      });
-
-      const statuses = await Promise.all(promises);
-      const updatedGarages = garagesArray.map((garage, index) => ({
-        ...garage,
-        closed: statuses[index].closed
-      }));
-
-      setGarages(updatedGarages);
-    } catch (error) {
-      console.error('Error checking all statuses:', error);
-    }
-  };
-
-  const checkStatus = async (garage) => {
-    setLoading(true);
-    try {
-      const response = await fetch(getAddress(garage, 'status'));
-      const responseJson = await response.json();
-      
-      const updatedGarages = garages.map(g => 
-        g.id === garage.id ? { ...g, closed: responseJson.closed } : g
-      );
-      
-      setGarages(updatedGarages);
-    } catch (error) {
-      const updatedGarages = garages.map(g => 
-        g.id === garage.id ? { ...g, closed: 'error' } : g
-      );
-      
-      setGarages(updatedGarages);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const removeId = async (id) => {
-    Alert.alert(
-      'Warning',
-      'Are you sure you want to delete this garage?',
-      [
-        {
-          text: 'Yes',
-          onPress: async () => {
-            try {
-              const updatedGarages = garages.filter(g => g.id !== id);
-              await AsyncStorage.setItem('garages', JSON.stringify(updatedGarages));
-              setGarages(updatedGarages);
-              setNoGarage(updatedGarages.length === 0);
-            } catch (error) {
-              Alert.alert('Error', 'Failed to remove garage');
-            }
-          }
-        },
-        { text: 'Cancel' }
-      ]
-    );
-  };
-
-  const toggleDoor = async (garage) => {
-    Alert.alert(
-      'Warning',
-      'Are you sure you want to toggle the garage door?',
-      [
-        {
-          text: 'Yes',
-          onPress: async () => {
-            setLoading(true);
-            try {
-              const response = await fetch(getAddress(garage, 'toggle'));
-              await response.json();
-              Alert.alert('Info', 'Command sent successfully');
-            } catch (error) {
-              Alert.alert('Error', 'Failed to send request');
-            } finally {
-              setLoading(false);
-            }
-          }
-        },
-        { text: 'Cancel' }
-      ]
-    );
-  };
-
-  const renderGarageStatus = (garage) => {
-    if (garage.closed === true) {
-      return <Text>Status: Garage Closed</Text>;
-    } else if (garage.closed === false) {
-      return <Text>Status: Garage Open</Text>;
-    } else {
-      return <Text>Error requesting status</Text>;
-    }
-  };
-
-  const garageDiv = garages.map((garage) => (
-    <View style={{ marginBottom: 10, padding: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 5 }} key={garage.id}>
-      <View>
-        <Text>{garage.nickname}</Text>
-        <Text>Number {garage.number}</Text>
-      </View>
-      <View>
-        {renderGarageStatus(garage)}
-      </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-        {orderMode ? (
-          <View>
-            <Button title="Up" onPress={() => switchPosition(garage.id, -1)} />
-            <Button title="Down" onPress={() => switchPosition(garage.id, 1)} />
-          </View>
-        ) : (
-          <View>
-            <Button title="Toggle" onPress={() => toggleDoor(garage)} />
-            <Button title="Refresh" onPress={() => checkStatus(garage)} />
-            <Button title="Edit" onPress={() => navigation.navigate('Edit', { id: garage.id, onGoBack: loadGarages })} />
-            <Button title="Delete" onPress={() => removeId(garage.id)} />
-          </View>
-        )}
-      </View>
-    </View>
-  ));
 
   return (
-    <View style={{ flex: 1, padding: 10 }}>
-      <StatusBar backgroundColor='#5880b7' />
-      {loading && (
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-        <ActivityIndicator size="large" color="#7496c4" />
-      </View>
-      )}
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
-      {noGarage ? (
-        <Text>No garages added.</Text>
-      ) : (
-        <View>
-        {garageDiv}
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#5880b7" />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Server Address</Text>
+          <TextInput
+            style={styles.input}
+            value={server}
+            onChangeText={setServer}
+            placeholder="Enter server address"
+          />
+
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Enter password"
+            secureTextEntry
+          />
+
+          <Text style={styles.label}>Garage Number</Text>
+          <TextInput
+            style={styles.input}
+            value={number}
+            onChangeText={setNumber}
+            placeholder="Enter garage number"
+            keyboardType="numeric"
+          />
+
+          <Text style={styles.label}>Nickname</Text>
+          <TextInput
+            style={styles.input}
+            value={nickname}
+            onChangeText={setNickname}
+            placeholder="Enter garage nickname"
+          />
+
+          <TouchableOpacity 
+            style={styles.saveButton} 
+            onPress={saveConfig}
+          >
+            <Text style={styles.saveButtonText}>Save</Text>
+          </TouchableOpacity>
         </View>
-      )}
       </ScrollView>
-      <View style={{ marginTop: 20, padding: 10 }}>
-        <View style={{ marginBottom: 10 }}>
-          <Button title="Order Mode" onPress={() => setOrderMode(!orderMode)} color="#2980b9" />
-        </View>
-        <View style={{ marginBottom: 10 }}>
-          <Button title="Add Garage" onPress={() => navigation.navigate('Edit', { onGoBack: loadGarages })} color="#DD5144" />
-        </View>
-        <View style={{ marginBottom: 10 }}>
-          <Button title="Refresh All" onPress={() => checkAllStatus()} color="#16a085" icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name= "location"/>} />
-        </View>
-      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  scrollContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  inputContainer: {
+    width: '100%',
+  },
+  label: {
+    marginTop: 15,
+    marginBottom: 5,
+    fontSize: 16,
+    color: '#333',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    padding: 10,
+    borderRadius: 6,
+    fontSize: 16,
+  },
+  saveButton: {
+    backgroundColor: '#7496c4',
+    padding: 15,
+    borderRadius: 6,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
+});

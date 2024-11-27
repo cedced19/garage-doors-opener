@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StatusBar, Alert, View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button } from 'react-native-elements';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from 'expo-router';
+import { GlobalContext } from './lib/global-context';
 
 function getAddress(garage, command) {
   return garage.server.replace(/\/\s*$/, '') + '/garage/' + garage.number + '/' + command + '/' + garage.password;
 }
 
-export default function MainScreen({ navigation }) {
-  const [fabActive, setFabActive] = useState(false);
+export default function MainScreen() {
+  const { currentGarage, garageDefined, defineCurrentGarage, removeCurrentGarage, garages, setGarages } = useContext(GlobalContext);
   const [orderMode, setOrderMode] = useState(false);
-  const [noGarage, setNoGarage] = useState(true);
-  const [garages, setGarages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     loadGarages();
@@ -25,7 +26,6 @@ export default function MainScreen({ navigation }) {
       if (data) {
         const parsed = JSON.parse(data);
         if (parsed.length >= 1) {
-          setNoGarage(false);
           setGarages(parsed);
           checkAllStatus(parsed);
         }
@@ -40,7 +40,6 @@ export default function MainScreen({ navigation }) {
     try {
       const updatedGarages = [...garages];
       const k = updatedGarages.findIndex((item) => item.id === id);
-      
       if (k !== -1) {
         const newPosition = k + position;
         if (newPosition < updatedGarages.length && newPosition >= 0) {
@@ -115,7 +114,6 @@ export default function MainScreen({ navigation }) {
               const updatedGarages = garages.filter(g => g.id !== id);
               await AsyncStorage.setItem('garages', JSON.stringify(updatedGarages));
               setGarages(updatedGarages);
-              setNoGarage(updatedGarages.length === 0);
             } catch (error) {
               Alert.alert('Error', 'Failed to remove garage');
             }
@@ -180,7 +178,10 @@ export default function MainScreen({ navigation }) {
           <View>
             <Button title="Toggle" onPress={() => toggleDoor(garage)} />
             <Button title="Refresh" onPress={() => checkStatus(garage)} />
-            <Button title="Edit" onPress={() => navigation.navigate('Edit', { id: garage.id, onGoBack: loadGarages })} />
+            <Button title="Edit" onPress={() => {
+              defineCurrentGarage(garage);
+              router.navigate('./add-garage');
+            }} />
             <Button title="Delete" onPress={() => removeId(garage.id)} />
           </View>
         )}
@@ -197,7 +198,7 @@ export default function MainScreen({ navigation }) {
       </View>
       )}
       <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
-      {noGarage ? (
+      {(garages.length == 0) ? (
         <Text>No garages added.</Text>
       ) : (
         <View>
@@ -216,7 +217,10 @@ export default function MainScreen({ navigation }) {
         <View style={{ marginBottom: 10 }}>
           <Button 
             title="Add Garage" 
-            onPress={() => navigation.navigate('Edit', { onGoBack: loadGarages })} 
+            onPress={() => {
+              removeCurrentGarage();
+              router.navigate('./add-garage');
+            }} 
             buttonStyle={{ backgroundColor: '#7496c4' }} 
             icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="add-outline"/>} 
           />
