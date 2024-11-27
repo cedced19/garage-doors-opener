@@ -170,23 +170,26 @@ export default function MainScreen() {
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
         {orderMode ? (
-          <View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Button onPress={() => switchPosition(garage.id, -1)} 
               icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="arrow-up-outline"/>} 
+              buttonStyle={{ backgroundColor: '#7496c4', marginHorizontal: 5, paddingHorizontal: 25 }}
             />
             <Button onPress={() => switchPosition(garage.id, 1)}
-              icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="arrow-down-outline"/>} />
-          </View>
+              icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="arrow-down-outline"/>} 
+              buttonStyle={{ backgroundColor: '#7496c4', marginHorizontal: 5, paddingHorizontal: 25 }}
+            />
+            </View>
         ) : (
-          <View>
-            <Button icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="key-outline"/>} onPress={() => toggleDoor(garage)} />
-            <Button icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="refresh-outline"/>} onPress={() => checkStatus(garage)} />
-            <Button icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="pencil-outline"/>} onPress={() => {
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Button icon={<Ionicons size={20} style={{ color: '#fff' }} name="key-outline"/>} onPress={() => toggleDoor(garage)} buttonStyle={{ backgroundColor: '#1abc9c', marginHorizontal: 5, paddingHorizontal: 25 }} />
+              <Button icon={<Ionicons size={20} style={{ color: '#fff' }} name="refresh-outline"/>} onPress={() => checkStatus(garage)} buttonStyle={{ backgroundColor: '#7496c4', marginHorizontal: 5, paddingHorizontal: 25 }} />
+              <Button icon={<Ionicons size={20} style={{ color: '#fff' }} name="pencil-outline"/>} onPress={() => {
               defineCurrentGarage(garage);
               router.navigate('./add-garage');
-            }} />
-            <Button icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="trash-outline"/>} onPress={() => removeId(garage.id)} />
-          </View>
+              }} buttonStyle={{ backgroundColor: '#7496c4', marginHorizontal: 5, marginLeft: 15 }} />
+              <Button icon={<Ionicons size={20} style={{ color: '#fff' }} name="trash-outline"/>} onPress={() => removeId(garage.id)} buttonStyle={{ backgroundColor: '#7496c4', marginHorizontal: 5 }} />
+            </View>
         )}
       </View>
     </View>
