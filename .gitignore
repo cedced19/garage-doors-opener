@@ -8,3 +8,39 @@ mobile/android/app/out
 watch-over/list.json
 watch-over/node_modules
 watch-over/config.json
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+mobile-new/node_modules/
+
+# Expo
+mobile-new/.expo/
+mobile-new/dist/
+mobile-new/web-build/
+mobile-new/expo-env.d.ts
+
+# Native
+mobile-new/*.orig.*
+mobile-new/*.jks
+mobile-new/*.p8
+mobile-new/*.p12
+mobile-new/*.key
+mobile-new/*.mobileprovision
+
+# Metro
+mobile-new/.metro-health-check*
+
+# debug
+mobile-new/npm-debug.*
+mobile-new/yarn-debug.*
+mobile-new/yarn-error.*
+
+# macOS
+mobile-new/.DS_Store
+mobile-new/*.pem
+
+# local env files
+mobile-new/.env*.local
+
+# typescript
+mobile-new/*.tsbuildinfo
