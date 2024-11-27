@@ -29,8 +29,17 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack screenOptions={{
+        headerStyle: {
+          backgroundColor: '#7496c4',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
+        <Stack.Screen name="index" options={{ headerShown: true, title: 'Accueil' }} />
+        <Stack.Screen name="add-garage" options={{ headerShown: true, title: 'Add garage' }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
