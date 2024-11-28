@@ -44,3 +44,5 @@ mobile-new/.env*.local
 
 # typescript
 mobile-new/*.tsbuildinfo
+**/**/.DS_Store
+mobile-new/android/app/**.keystore

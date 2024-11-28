@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.garagedoorsopener"
     },
     "android": {
       "adaptiveIcon": {
@@ -43,7 +44,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "429644c4-d587-4fd4-91c2-42c1add61e0"
+        "projectId": "429644c4-d587-4fd4-91c2-42c1add61e00"
       }
     }
   }
