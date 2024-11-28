@@ -124,7 +124,6 @@ export default function EditScreen() {
             value={password}
             onChangeText={setPassword}
             placeholder="Enter password"
-            secureTextEntry
           />
 
           <Text style={styles.label}>Garage Number</Text>
