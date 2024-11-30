@@ -12,6 +12,7 @@ import {
 import { GlobalContext } from './lib/global-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import { useTranslation } from "react-i18next";
 
 // Utility functions
 function makeId() {
@@ -35,6 +36,7 @@ function checkEmptyProperties(state) {
 }
 
 export default function EditScreen() {
+  const { t } = useTranslation();
   const { currentGarage, garageDefined, defineCurrentGarage, removeCurrentGarage, garages, setGarages } = useContext(GlobalContext);
   const [server, setServer] = useState('');
   const [password, setPassword] = useState('');
@@ -53,28 +55,28 @@ export default function EditScreen() {
   }, []);
 
   const loadExistingGarage = (garage) => {
-          setServer(garage.server);
-          setPassword(garage.password);
-          setNickname(garage.nickname);
-          setNumber(garage.number);
-          setId(garage.id);
+    setServer(garage.server);
+    setPassword(garage.password);
+    setNickname(garage.nickname);
+    setNumber(garage.number);
+    setId(garage.id);
   };
 
   const saveConfig = async () => {
     // Validation
     const emptyProperty = checkEmptyProperties({ server, password, nickname, number });
     if (emptyProperty) {
-      Alert.alert('Error', `Please fill in the ${emptyProperty} field`);
+      Alert.alert(t('error'), t('fill_field', { field: t(emptyProperty) }));
       return;
     }
 
     if (isNaN(Number(number))) {
-      Alert.alert('Error', 'Invalid garage number');
+      Alert.alert(t('error'), t('invalid_garage_number'));
       return;
     }
 
     if (!isUrl(server)) {
-      Alert.alert('Error', 'Invalid server address');
+      Alert.alert(t('error'), t('invalid_server_address'));
       return;
     }
 
@@ -101,7 +103,7 @@ export default function EditScreen() {
       router.replace('/');
 
     } catch (error) {
-      Alert.alert('Error', 'Failed to save garage configuration');
+      Alert.alert(t('error'), t('failed_to_save'));
     }
   };
 
@@ -110,44 +112,44 @@ export default function EditScreen() {
       <StatusBar backgroundColor="#5880b7" />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Server Address</Text>
+          <Text style={styles.label}>{t('server_address')}</Text>
           <TextInput
             style={styles.input}
             value={server}
             onChangeText={setServer}
-            placeholder="Enter server address"
+            placeholder={t('enter_server_address')}
           />
 
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label}>{t('password')}</Text>
           <TextInput
             style={styles.input}
             value={password}
             onChangeText={setPassword}
-            placeholder="Enter password"
+            placeholder={t('enter_password')}
           />
 
-          <Text style={styles.label}>Garage Number</Text>
+          <Text style={styles.label}>{t('garage_number')}</Text>
           <TextInput
             style={styles.input}
             value={number}
             onChangeText={setNumber}
-            placeholder="Enter garage number"
+            placeholder={t('enter_garage_number')}
             keyboardType="numeric"
           />
 
-          <Text style={styles.label}>Nickname</Text>
+          <Text style={styles.label}>{t('nickname')}</Text>
           <TextInput
             style={styles.input}
             value={nickname}
             onChangeText={setNickname}
-            placeholder="Enter garage nickname"
+            placeholder={t('enter_garage_nickname')}
           />
 
           <TouchableOpacity 
             style={styles.saveButton} 
             onPress={saveConfig}
           >
-            <Text style={styles.saveButtonText}>Save</Text>
+            <Text style={styles.saveButtonText}>{t('save')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

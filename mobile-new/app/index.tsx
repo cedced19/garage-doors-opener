@@ -5,12 +5,10 @@ import { Button } from 'react-native-elements';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { GlobalContext } from './lib/global-context';
-
-function getAddress(garage, command) {
-  return garage.server.replace(/\/\s*$/, '') + '/garage/' + garage.number + '/' + command + '/' + garage.password;
-}
+import { useTranslation } from "react-i18next";
 
 export default function MainScreen() {
+  const { t } = useTranslation();
   const { currentGarage, garageDefined, defineCurrentGarage, removeCurrentGarage, garages, setGarages } = useContext(GlobalContext);
   const [orderMode, setOrderMode] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -51,7 +49,7 @@ export default function MainScreen() {
         }
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to update garage order');
+      Alert.alert(t('error'), t('error_updating_garage_order'));
     } finally {
       setLoading(false);
     }
@@ -104,47 +102,47 @@ export default function MainScreen() {
 
   const removeId = async (id) => {
     Alert.alert(
-      'Warning',
-      'Are you sure you want to delete this garage?',
+      t('warning'),
+      t('warning_deleting'),
       [
         {
-          text: 'Yes',
+          text: t('yes'),
           onPress: async () => {
             try {
               const updatedGarages = garages.filter(g => g.id !== id);
               await AsyncStorage.setItem('garages', JSON.stringify(updatedGarages));
               setGarages(updatedGarages);
             } catch (error) {
-              Alert.alert('Error', 'Failed to remove garage');
+              Alert.alert(t('error'), t('error_removing_garage'));
             }
           }
         },
-        { text: 'Cancel' }
+        { text: t('cancel') }
       ]
     );
   };
 
   const toggleDoor = async (garage) => {
     Alert.alert(
-      'Warning',
-      'Are you sure you want to toggle the garage door?',
+      t('warning'),
+      t('warning_toggling'),
       [
         {
-          text: 'Yes',
+          text: t('yes'),
           onPress: async () => {
             setLoading(true);
             try {
               const response = await fetch(getAddress(garage, 'toggle'));
               await response.json();
-              Alert.alert('Info', 'Command sent successfully');
+              Alert.alert(t('info'), t('info_command_sent'));
             } catch (error) {
-              Alert.alert('Error', 'Failed to send request');
+              Alert.alert(t('error'), t('error_sending_request'));
             } finally {
               setLoading(false);
             }
           }
         },
-        { text: 'Cancel' }
+        { text: t('cancel') }
       ]
     );
   };
@@ -153,18 +151,17 @@ export default function MainScreen() {
     if (garage.closed === true) {
       return <View>
         <Ionicons size={40} style={{ marginEnd: 5, color: '#000' }} name="lock-closed-outline"/>
-        <Text style={{ fontSize: 17 }}>Status: Garage Closed</Text>
+        <Text style={{ fontSize: 17 }}>{t('garage_closed')}</Text>
       </View>
-      return ;
     } else if (garage.closed === false) {
       return <View>
         <Ionicons size={40} style={{ marginEnd: 5, color: '#000' }} name="lock-open-outline"/>
-        <Text style={{ fontSize: 17 }}>Status: Garage Open</Text>
+        <Text style={{ fontSize: 17 }}>{t('garage_not_closed')}</Text>
       </View>;
     } else {
       return <View>
         <Ionicons size={40} style={{ marginEnd: 5, color: '#000' }} name="warning-outline"/>
-        <Text style={{ fontSize: 17 }}>Error requesting status</Text>;
+        <Text style={{ fontSize: 17 }}>{t('error_requesting_status')}</Text>
       </View>
     }
   };
@@ -173,7 +170,7 @@ export default function MainScreen() {
     <View style={{ marginBottom: 10, padding: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 5 }} key={garage.id}>
       <View>
         <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{garage.nickname}</Text>
-        <Text style={{ color: 'grey', fontSize: 14 }}>Number {garage.number}</Text>
+        <Text style={{ color: 'grey', fontSize: 14 }}>{t('number')} {garage.number}</Text>
       </View>
       <View>
         {renderGarageStatus(garage)}
@@ -209,11 +206,12 @@ export default function MainScreen() {
     <View style={{ flex: 1, padding: 10 }}>
       <StatusBar backgroundColor='#5880b7' />
       <CustomWaiting
-              visible={loading} 
+              visible={loading}
+              text={t('loading')}
       />
       <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
       {(garages.length == 0) ? (
-        <Text>No garages added.</Text>
+        <Text>{t('no_garages_added')}</Text>
       ) : (
         <View>
         {garageDiv}
@@ -223,14 +221,14 @@ export default function MainScreen() {
       <View style={{ marginTop: 20, padding: 10 }}>
         <View style={{ marginBottom: 10 }}>
           <Button 
-          title="Order Mode" 
+          title={t('order_garages')} 
           onPress={() => setOrderMode(!orderMode)} 
           buttonStyle={{ backgroundColor: '#7496c4' }}  
           icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="swap-vertical-outline"/>} />
         </View>
         <View style={{ marginBottom: 10 }}>
           <Button 
-            title="Add Garage" 
+            title={t('add_garage')} 
             onPress={() => {
               removeCurrentGarage();
               router.navigate('./add-garage');
@@ -241,7 +239,7 @@ export default function MainScreen() {
         </View>
         <View style={{ marginBottom: 10 }}>
           <Button 
-            title="Refresh All"
+            title={t('refresh_all')}
             buttonStyle={{ backgroundColor: '#7496c4' }}
             onPress={() => checkAllStatus()} 
             icon={<Ionicons size={20} style={{ marginEnd: 5, color: '#fff' }} name="refresh-outline"/>}
@@ -252,13 +250,17 @@ export default function MainScreen() {
   );
 }
 
-const CustomWaiting = ({ visible }) => (
+const CustomWaiting = ({ text, visible }) => (
   <Modal visible={visible}>
     <View style={{ flex: 1, backgroundColor: "#00000020", justifyContent: "center", alignItems: "center" }}>
       <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5, width: "80%", alignItems: "center" }}>
-        <Text style={{ fontSize: 20 }}>Loading</Text>
+        <Text style={{ fontSize: 20 }}>{text}</Text>
         <ActivityIndicator size="large" color="#7496c4" />
       </View>
     </View>
   </Modal>
 );
+
+function getAddress(garage, command) {
+  return garage.server.replace(/\/\s*$/, '') + '/garage/' + garage.number + '/' + command + '/' + garage.password;
+}
