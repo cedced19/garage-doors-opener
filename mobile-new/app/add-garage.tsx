@@ -137,7 +137,7 @@ export default function EditScreen() {
             keyboardType="numeric"
           />
 
-          <Text style={styles.label}>{t('nickname')}</Text>
+          <Text style={styles.label}>{t('nickname_garage')}</Text>
           <TextInput
             style={styles.input}
             value={nickname}

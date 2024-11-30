@@ -2,7 +2,7 @@
   "expo": {
     "name": "Garage Doors Opener",
     "slug": "garagedooropener",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 22,
+      "versionCode": 23,
       "package": "com.garagedoorsopener",
       "runtimeVersion": "1.0.0"
     },
