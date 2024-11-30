@@ -46,3 +46,4 @@ mobile-new/.env*.local
 mobile-new/*.tsbuildinfo
 **/**/.DS_Store
 mobile-new/android/app/**.keystore
+mobile-new/eas-upload.json

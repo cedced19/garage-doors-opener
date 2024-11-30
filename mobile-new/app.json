@@ -2,7 +2,7 @@
   "expo": {
     "name": "Garage Doors Opener",
     "slug": "garagedooropener",
-    "version": "1.0.0",
+    "version": "2.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -10,14 +10,19 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.garagedoorsopener"
+      "bundleIdentifier": "com.garagedoorsopener",
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.garagedoorsopener"
+      "versionCode": 22,
+      "package": "com.garagedoorsopener",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -46,6 +51,9 @@
       "eas": {
         "projectId": "429644c4-d587-4fd4-91c2-42c1add61e00"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/429644c4-d587-4fd4-91c2-42c1add61e00"
     }
   }
 }

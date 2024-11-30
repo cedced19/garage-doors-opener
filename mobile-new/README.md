@@ -54,5 +54,7 @@ Join our community of developers creating universal apps.
 
 ```bash
 eas credentials
+npx expo prebuild --platform=android
 eas build --platform android
+eas submit -p android
 ```
