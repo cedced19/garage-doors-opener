@@ -39,6 +39,7 @@
     "refresh_all": "Alle aktualisieren",
     "add_garage": "Garage hinzufügen",
     "save": "Speichern",
+    "failed_to_save": "Ein Fehler ist aufgetreten: konnte nicht gespeichert werden.",
     "order_garages": "Garagen anordnen",
     "fill_field": "Bitte füllen Sie das Feld {{field}} aus."
 }

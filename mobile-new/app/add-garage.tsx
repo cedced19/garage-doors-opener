@@ -71,12 +71,12 @@ export default function EditScreen() {
     }
 
     if (isNaN(Number(number))) {
-      Alert.alert(t('error'), t('invalid_garage_number'));
+      Alert.alert(t('error'), t('error_invalid_number'));
       return;
     }
 
     if (!isUrl(server)) {
-      Alert.alert(t('error'), t('invalid_server_address'));
+      Alert.alert(t('error'), t('error_invalid_address'));
       return;
     }
 

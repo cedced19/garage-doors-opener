@@ -39,6 +39,7 @@
     "refresh_all": "Refresh all",
     "add_garage": "Add garage",
     "save": "Save",
+    "failed_to_save": "Failed to save",
     "order_garages": "Order garages",
     "fill_field": "Please fill in the {{field}} field."
 }

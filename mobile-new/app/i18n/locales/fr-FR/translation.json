@@ -39,6 +39,7 @@
     "refresh_all": "Rafraîchir tout",
     "add_garage": "Ajouter un garage",
     "save": "Enregistrer",
+    "failed_to_save": "Impossible de sauvegarder",
     "order_garages": "Ordonner les garages",
     "fill_field": "Veuillez remplir le champ {{field}}."
 }
