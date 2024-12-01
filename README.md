@@ -83,3 +83,11 @@ If you want to use a ethernet cable yon can also do it with the file `arduino-et
 ## System with Raspberry Pi
 
 It is quite the same as the system with Arduino and Ethernet Shield.
+
+## Demo garage to use in the app
+
+In order to test the app you can use:
+* Server address: https://cedced19.github.io/garage-doors-opener/demo/
+* Password: demo1234
+* Garage number: 1
+* Garage nickname: Test
