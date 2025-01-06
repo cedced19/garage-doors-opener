@@ -55,7 +55,7 @@ void openDoor() {
 
 void setup() {
   pinMode(LED, OUTPUT);                   // Set led pin as output
-  pinMode(switchPin, INPUT_PULLUP);       // Configure switch pin with pull-up
+  pinMode(switchPin, INPUT);       // Configure switch pin with pull-down
   pinMode(garageSensor1, INPUT_PULLUP);   // Configure switch pin with pull-up
   pinMode(garageCommand1, OUTPUT);        // Set the relay pin as output
   digitalWrite(garageCommand1, LOW);      // Ensure the relay is initially off
@@ -122,7 +122,7 @@ void loop() {
   
   // Check if the switch is closed and respect the time threshold
   if (currentTime - lastSwitchTime >= switchThreshold) {
-    if (switchState == LOW && !switchPreviouslyClosed) {
+    if (switchState == HIGH && !switchPreviouslyClosed) {
       Serial.println("Switch closed, relay will be activated!");
       openDoor();
       lastSwitchTime = currentTime;  // Update the last switch time
@@ -131,7 +131,7 @@ void loop() {
   }
 
   // Check if the switch is released (HIGH)
-  if (switchState == HIGH && switchPreviouslyClosed) {
+  if (switchState == LOW && switchPreviouslyClosed) {
     switchPreviouslyClosed = false; // Reset the switch state
   }
 
