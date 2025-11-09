@@ -53,3 +53,8 @@ Share to [Docker Hub](https://hub.docker.com/r/cedced19/watch-over):
 docker tag watch-over:latest cedced19/watch-over:latest
 docker push cedced19/watch-over:latest
 ```
+
+Multiple platform:
+```
+docker buildx build   --platform linux/amd64,linux/arm64   -t cedced19/watch-over:latest   --push .
+```
